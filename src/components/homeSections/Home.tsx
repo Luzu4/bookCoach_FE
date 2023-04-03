@@ -65,8 +65,9 @@ const Home = () => {
                         <SearchInput/>
                     </Grid>
                     {GAMES.map(game=>(
-                        <Grid item xs={4}>
-                            <GameCard description={game.description}
+                        <Grid key={game.gameName} item xs={4}>
+                            <GameCard
+                                description={game.description}
                                       gameName={game.gameName}
                                       shortGameName={game.shortGameName}
                                       imgPath={game.imgPath}/>

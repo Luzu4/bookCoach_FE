@@ -5,9 +5,9 @@ import "./VisitFormRegister.css";
 import {useForm, SubmitHandler} from "react-hook-form";
 import {useSelector} from "react-redux";
 import {coachesSelector} from "../../store/coachesSlice"
-import {getCoachesGamesData} from "../../store/coachesActions";
-import {useAppDispatch} from "../../store/store";
 import SelectDropDown from "../selectDropDown/SelectDropDown";
+import {useGetAllUserGamesByUserIdQuery} from '../../store/bookCoachApi';
+import {skipToken} from "@reduxjs/toolkit/query";
 
 type FormValues = {
     email: string;
@@ -38,11 +38,14 @@ const VisitFormRegister = () => {
         setCoachId(event.target.value);
     };
     const [games, setGames] = useState<Game[]>([]);
-    const dispatch = useAppDispatch()
-    useEffect(() => {
-        dispatch(getCoachesGamesData(coachId)).then(data => setGames(data));
+    const { data,error,isLoading } = useGetAllUserGamesByUserIdQuery(coachId, {skip:!coachId});
 
-    }, [coachId, dispatch]);
+
+    useEffect(() => {
+        if(data){
+            setGames(data);
+        }
+    }, [coachId, data]);
 
     const [gameId, setGameId] = useState('');
     const handleChangeGameName = (event: SelectChangeEvent) => {

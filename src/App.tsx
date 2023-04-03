@@ -4,18 +4,22 @@ import Header from "./components/header/Header";
 import Main from "./components/main/Main";
 import {Route, Routes} from "react-router";
 import VisitFormRegister from "./components/pages/VisitFormRegister";
-import {useAppDispatch} from "./store/store"
-import {fetchCoachesData} from "./store/coachesActions";
+
 import {useEffect} from "react";
+import {coachesActions} from "./store/coachesSlice";
+import {useAppDispatch} from "./store/store";
+import {useGetAllByTypeQuery} from './store/bookCoachApi'
 
 function App() {
 
-    const dispatch = useAppDispatch()
+    const{data:allCoaches} = useGetAllByTypeQuery(1);
+
+    const dispatch = useAppDispatch();
+
 
     useEffect(()=>{
-        dispatch(fetchCoachesData());
-    },[dispatch]);
-
+        dispatch(coachesActions.replaceCoaches(allCoaches))
+    },[dispatch,allCoaches]);
 
     return (
         <div className="App">

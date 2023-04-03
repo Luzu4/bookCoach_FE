@@ -43,7 +43,7 @@ const StaffSection = () => {
                     <h1>OUR STAFF</h1>
                 </Grid>
                 {STAFF.map((member)=>(
-                    <Grid item xs={4}>
+                    <Grid key={member.coachName} item xs={4}>
                         <CoachCard coachNick={member.coachNick}
                                   coachName={member.coachName}
                                   description={member.description}
