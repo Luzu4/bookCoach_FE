@@ -1,18 +1,20 @@
 import React from 'react';
-import Select from "@mui/material/Select";
+import Select, {SelectChangeEvent} from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 
+
 type SelectProps = {
-    register: {},
     id: string,
-    handleChange: () => void,
-    values: [{ id: number, nickName: string }]
+    handleChange: (event: SelectChangeEvent)=>void,
+    values: {    id: number;
+        nickName?: string;
+    name?:string;
+    }[]
 }
 
-const SelectDropDown: React.FC<SelectProps> = ({register, id, handleChange, values}) => {
+const SelectDropDown: React.FC<SelectProps> = ({id, handleChange, values}) => {
     return (
         <Select
-            {...register("coachId")}
             labelId="demo-simple-select-autowidth-label"
             id="demo-simple-select-autowidth"
             value={id}
@@ -27,7 +29,7 @@ const SelectDropDown: React.FC<SelectProps> = ({register, id, handleChange, valu
                 <em>None</em>
             </MenuItem>
             {values.map((value) => (
-                <MenuItem key={value.id} value={value.id}>{value.nickName}</MenuItem>
+                <MenuItem key={value.id} value={value.id}>{value.nickName || value.name}</MenuItem>
             ))}
         </Select>
     );
