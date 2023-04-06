@@ -1,13 +1,17 @@
 import React, {useEffect, useState} from 'react';
-import{SelectChangeEvent} from '@mui/material/Select';
+import {SelectChangeEvent} from '@mui/material/Select';
 import {Grid} from "@mui/material";
 import "./VisitFormRegister.css";
 import {useForm, SubmitHandler} from "react-hook-form";
 import {useSelector} from "react-redux";
 import {coachesSelector} from "../../store/coachesSlice"
 import SelectDropDown from "../selectDropDown/SelectDropDown";
-import {useGetAllUserGamesByUserIdQuery} from '../../store/bookCoachApi';
-import {skipToken} from "@reduxjs/toolkit/query";
+import {
+    useAddPlayerToLessonMutation,
+    useGetAllUserGamesByUserIdQuery,
+    useGetFreeLessonsByGameIdAndUserIdQuery,
+} from '../../store/bookCoachApi';
+import LessonsTable from "../LessonsTable";
 
 type FormValues = {
     email: string;
@@ -25,6 +29,19 @@ type Coach = {
     nickName: string;
 }
 
+type Lesson =
+    {
+
+        date: string;
+        time: string;
+        playerNote?: string;
+        playerId?: number;
+        playerEmail: string;
+        game: {};
+        user: {};
+
+    }
+
 const VisitFormRegister = () => {
     const [coaches, setCoaches] = useState<Coach[]>([]);
     const coachesStore = useSelector(coachesSelector);
@@ -38,27 +55,63 @@ const VisitFormRegister = () => {
         setCoachId(event.target.value);
     };
     const [games, setGames] = useState<Game[]>([]);
-    const { data,error,isLoading } = useGetAllUserGamesByUserIdQuery(coachId, {skip:!coachId});
+    const {data} = useGetAllUserGamesByUserIdQuery(coachId, {skip: !coachId});
 
+
+    const [lessonsDataTable, setLessonsDataTable] = useState<Lesson[]>([]);
 
     useEffect(() => {
-        if(data){
+        if (data) {
             setGames(data);
         }
     }, [coachId, data]);
 
+
     const [gameId, setGameId] = useState('');
     const handleChangeGameName = (event: SelectChangeEvent) => {
         setGameId(event.target.value);
+        setTableWithLessonView(true);
     };
+
+    const [tableWithLessonView, setTableWithLessonView] = useState(false);
+
+    const {data: lessonsData} = useGetFreeLessonsByGameIdAndUserIdQuery({
+        id: `${gameId}`,
+        userId: `${coachId}`
+    }, {skip: !gameId})
+
+    useEffect(() => {
+        if (lessonsData) {
+            setLessonsDataTable(lessonsData);
+        }
+    }, [lessonsData])
+
+
 
     const {register, handleSubmit} = useForm<FormValues>();
     const onSubmit: SubmitHandler<FormValues> = data => {
         data.coachId = coachId;
-        data.gameId= gameId;
-        console.log(data);
+        data.gameId = gameId;
+        setEmail(data.email);
     }
 
+    const [email, setEmail] = useState("");
+
+    const [addPlayerToLesson] = useAddPlayerToLessonMutation()
+    const handleSendButtonClick = (id: string | number) => {
+        if (lessonsData && email.length>3) {
+            let lessonDataToSave = {
+                "playerEmail": email,
+                "lessonId": id,
+            }
+            addPlayerToLesson(lessonDataToSave).unwrap()
+                .then(() => {
+                })
+                .then((error) => {
+                    console.log(error)
+                })
+        }
+    }
     return (
         <div className="form">
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -73,7 +126,7 @@ const VisitFormRegister = () => {
                         <SelectDropDown id={coachId} handleChange={handleChangeCoachNick} values={coaches}/>
                     </Grid>
                     <Grid item xs={5}>
-                        Email:<input type="email" {...register("email")}/><br/>
+                        Email:<input required type="email" {...register("email")} /><br/>
                     </Grid>
                     <Grid item xs={5}>
                         GameName:
@@ -81,8 +134,9 @@ const VisitFormRegister = () => {
                             <SelectDropDown id={gameId} handleChange={handleChangeGameName} values={games}/>
                         }
                     </Grid>
+                    {tableWithLessonView &&
+                        <LessonsTable data={lessonsDataTable} handleButtonSendClick={handleSendButtonClick}/>}
                     <Grid item xs={10}>
-                        <button type="submit">Submit</button>
                     </Grid>
                 </Grid>
             </form>

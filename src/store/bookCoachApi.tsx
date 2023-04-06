@@ -14,9 +14,23 @@ type User = {
     details_id: number,
 }
 
+type Lesson =
+    {
+        id:number;
+        date:string;
+        time:string;
+        playerNote: string;
+        playerId:number;
+        playerEmail:string;
+        game:{};
+        user:{};
+
+    }
+
 export const bookCoachApi = createApi({
     reducerPath: 'bookCoachApi',
     baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8080/' }),
+    tagTypes: ['Post'],
     endpoints: (builder) => ({
         getAllGames: builder.query<Game[],void>({
             query: () => "game/all"
@@ -30,7 +44,35 @@ export const bookCoachApi = createApi({
         getAllUserGamesByUserId: builder.query<Game[], string>({
             query: (id)=> `http://localhost:8080/game/user/${id}`,
         }),
+        getFreeLessonsByGameIdAndUserId: builder.query<Lesson[], { id:string; userId:string }>({
+            query: (arg)=>{
+                const {id,userId} = arg;
+                return`http://localhost:8080/lesson/free/game/${id}/user/${userId}`;
+            }
+        }),
+        addNewLesson: builder.mutation({
+            query: (payload) => ({
+                url: 'lesson/save',
+                method: 'POST',
+                body: payload,
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+            }),
+            invalidatesTags: ['Post'],
+        }),
+        addPlayerToLesson: builder.mutation({
+            query: (payload) => ({
+                url: 'lesson/add/player',
+                method: 'POST',
+                body: payload,
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+            }),
+            invalidatesTags: ['Post'],
+        }),
     }),
 })
 
-export const { useGetGameByIdQuery, useGetAllGamesQuery, useGetAllByTypeQuery, useGetAllUserGamesByUserIdQuery } = bookCoachApi
+export const { useAddPlayerToLessonMutation, useGetAllByTypeQuery, useGetAllUserGamesByUserIdQuery, useGetFreeLessonsByGameIdAndUserIdQuery, useAddNewLessonMutation } = bookCoachApi
