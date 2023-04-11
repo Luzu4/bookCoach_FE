@@ -29,7 +29,7 @@ type Lesson =
 
 export const bookCoachApi = createApi({
     reducerPath: 'bookCoachApi',
-    baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8080/' }),
+    baseQuery: fetchBaseQuery({ baseUrl: '/' }),
     tagTypes: ['Post'],
     endpoints: (builder) => ({
         getAllGames: builder.query<Game[],void>({
@@ -42,7 +42,7 @@ export const bookCoachApi = createApi({
             query: (type)=> `user/type/${type}`,
         }),
         getAllUserGamesByUserId: builder.query<Game[], string>({
-            query: (id)=> `http://localhost:8080/game/user/${id}`,
+            query: (id)=> `game/user/${id}`,
         }),
         getFreeLessonsByGameIdAndUserId: builder.query<Lesson[], { id:string; userId:string }>({
             query: (arg)=>{
@@ -72,6 +72,7 @@ export const bookCoachApi = createApi({
             }),
             invalidatesTags: ['Post'],
         }),
+
     }),
 })
 
