@@ -1,8 +1,8 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
 
-type Game ={
-    id:number,
-    name:string
+type Game = {
+    id: number,
+    name: string
 }
 
 type User = {
@@ -16,38 +16,38 @@ type User = {
 
 type Lesson =
     {
-        id:number;
-        date:string;
-        time:string;
+        id: number;
+        date: string;
+        time: string;
         playerNote: string;
-        playerId:number;
-        playerEmail:string;
-        game:{};
-        user:{};
+        playerId: number;
+        playerEmail: string;
+        game: {};
+        user: {};
 
     }
 
 export const bookCoachApi = createApi({
     reducerPath: 'bookCoachApi',
-    baseQuery: fetchBaseQuery({ baseUrl: '/' }),
+    baseQuery: fetchBaseQuery({baseUrl: '/'}),
     tagTypes: ['Post'],
     endpoints: (builder) => ({
-        getAllGames: builder.query<Game[],void>({
+        getAllGames: builder.query<Game[], void>({
             query: () => "game/all"
         }),
         getGameById: builder.query<Game, number>({
             query: (id) => `game/${id}`,
         }),
         getAllByType: builder.query<User[], number>({
-            query: (type)=> `user/type/${type}`,
+            query: (type) => `user/type/${type}`,
         }),
         getAllUserGamesByUserId: builder.query<Game[], string>({
-            query: (id)=> `game/user/${id}`,
+            query: (id) => `game/user/${id}`,
         }),
-        getFreeLessonsByGameIdAndUserId: builder.query<Lesson[], { id:string; userId:string }>({
-            query: (arg)=>{
-                const {id,userId} = arg;
-                return`http://localhost:8080/lesson/free/game/${id}/user/${userId}`;
+        getFreeLessonsByGameIdAndUserId: builder.query<Lesson[], { id: string; userId: string }>({
+            query: (arg) => {
+                const {id, userId} = arg;
+                return `http://localhost:8080/lesson/free/game/${id}/user/${userId}`;
             }
         }),
         addNewLesson: builder.mutation({
@@ -66,14 +66,28 @@ export const bookCoachApi = createApi({
                 url: 'lesson/add/player',
                 method: 'POST',
                 body: payload,
+                credentials: 'include',
                 headers: {
+                    'Accept': 'application/json',
                     'Content-type': 'application/json; charset=UTF-8',
                 },
             }),
             invalidatesTags: ['Post'],
         }),
-
+        checkIfUserIsAuthenticated: builder.query({
+            query: () => {
+                return ({url: "api/user", credentials: 'include'})
+            }
+        }),
     }),
 })
 
-export const { useAddPlayerToLessonMutation, useGetAllByTypeQuery, useGetAllUserGamesByUserIdQuery, useGetFreeLessonsByGameIdAndUserIdQuery, useAddNewLessonMutation } = bookCoachApi
+
+export const {
+    useAddPlayerToLessonMutation,
+    useGetAllByTypeQuery,
+    useGetAllUserGamesByUserIdQuery,
+    useGetFreeLessonsByGameIdAndUserIdQuery,
+    useAddNewLessonMutation,
+    useCheckIfUserIsAuthenticatedQuery,
+} = bookCoachApi

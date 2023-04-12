@@ -5,7 +5,8 @@ import {RootState} from "./store";
 type UserState = {
     id: number,
     userName: string,
-    authenticated: boolean
+    authenticated: boolean,
+
 }
 
 const defaultUserState: UserState = {id:0, userName:"",authenticated: false};
@@ -15,8 +16,16 @@ const userSlice = createSlice({
     initialState: defaultUserState,
     reducers:{
         setAuthenticated(state,action){
-            console.log(action.payload);
-            return action.payload;
+            state.authenticated=action.payload
+            return state;
+        },
+        setUserName(state,action){
+            state.userName = action.payload
+            return state;
+        },
+        setUserId(state, action){
+            state.id = action.payload
+            return state;
         },
 
     },
