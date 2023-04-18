@@ -16,7 +16,7 @@ type CardProps ={
     imgPath:string;
 }
 
-const GameCard: React.FC<CardProps>= ({gameName,shortGameName,description,imgPath})=> {
+const GameCard: React.FC<CardProps>= ({ gameName,shortGameName,description,imgPath})=> {
     const loadedImage= require('../images/cs2.jpg');
     return (
         <Card sx={{maxWidth: 345}}>
@@ -36,7 +36,7 @@ const GameCard: React.FC<CardProps>= ({gameName,shortGameName,description,imgPat
             </CardContent>
 
                 <CardActions disableSpacing>
-                    <Button variant="outlined" color="error" >
+                    <Button variant="outlined" color="error">
                         Search Coach
                     </Button>
                 </CardActions>

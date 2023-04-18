@@ -15,7 +15,7 @@ const LessonsTable:React.FC<TableProps> = ({data,handleButtonSendClick})=>{
         { field: 'id', headerName: 'ID', width: 70 },
         { field: 'date', headerName: 'Date', width: 200 },
         { field: 'time', headerName: 'Time', width: 200 },
-        { field: 'userId', headerName: 'CoachNick', width: 130 },
+        { field: 'userId', headerName: 'CoachNick', width: 130, },
         {
             field: 'action',
             filterable:false,

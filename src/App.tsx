@@ -9,16 +9,25 @@ import {useEffect} from "react";
 import {coachesActions} from "./store/coachesSlice";
 import {useAppDispatch} from "./store/store";
 import {useGetAllByTypeQuery} from './store/bookCoachApi'
+import {useLocalState} from "./store/useLocalStorage";
+import {checkToken} from "./store/userSlice";
 
 function App() {
 
-    const{data:allCoaches} = useGetAllByTypeQuery(1);
+    const{data:allCoaches} = useGetAllByTypeQuery("coach");
 
     const dispatch = useAppDispatch();
+
+    const [jwt, setJwt] = useLocalState("", "jwt");
+
+    if (jwt) {
+        dispatch(checkToken(jwt));
+    }
 
 
     useEffect(()=>{
         dispatch(coachesActions.replaceCoaches(allCoaches))
+
     },[dispatch,allCoaches]);
 
     return (

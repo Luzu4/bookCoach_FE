@@ -29,7 +29,7 @@ type Lesson =
 
 export const bookCoachApi = createApi({
     reducerPath: 'bookCoachApi',
-    baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8080/' }),
+    baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8080/api/' }),
     tagTypes: ['Post'],
     endpoints: (builder) => ({
         getAllGames: builder.query<Game[],void>({
@@ -38,16 +38,16 @@ export const bookCoachApi = createApi({
         getGameById: builder.query<Game, number>({
             query: (id) => `game/${id}`,
         }),
-        getAllByType: builder.query<User[], number>({
+        getAllByType: builder.query<User[], string>({
             query: (type)=> `user/type/${type}`,
         }),
         getAllUserGamesByUserId: builder.query<Game[], string>({
-            query: (id)=> `http://localhost:8080/game/user/${id}`,
+            query: (id)=> `game/user/${id}`,
         }),
         getFreeLessonsByGameIdAndUserId: builder.query<Lesson[], { id:string; userId:string }>({
             query: (arg)=>{
                 const {id,userId} = arg;
-                return`http://localhost:8080/lesson/free/game/${id}/user/${userId}`;
+                return`lesson/free/game/${id}/user/${userId}`;
             }
         }),
         addNewLesson: builder.mutation({

@@ -12,6 +12,7 @@ import {
     useGetFreeLessonsByGameIdAndUserIdQuery,
 } from '../../store/bookCoachApi';
 import LessonsTable from "../LessonsTable";
+import {userSelector} from "../../store/userSlice";
 
 type FormValues = {
     email: string;
@@ -45,7 +46,7 @@ type Lesson =
 const VisitFormRegister = () => {
     const [coaches, setCoaches] = useState<Coach[]>([]);
     const coachesStore = useSelector(coachesSelector);
-
+    const userData = useSelector(userSelector);
     useEffect(() => {
         setCoaches(coachesStore);
     }, [coachesStore]);
@@ -87,7 +88,6 @@ const VisitFormRegister = () => {
     }, [lessonsData])
 
 
-
     const {register, handleSubmit} = useForm<FormValues>();
     const onSubmit: SubmitHandler<FormValues> = data => {
         data.coachId = coachId;
@@ -99,7 +99,7 @@ const VisitFormRegister = () => {
 
     const [addPlayerToLesson] = useAddPlayerToLessonMutation()
     const handleSendButtonClick = (id: string | number) => {
-        if (lessonsData && email.length>3) {
+        if (lessonsData && email.length > 3) {
             let lessonDataToSave = {
                 "playerEmail": email,
                 "lessonId": id,
@@ -126,7 +126,7 @@ const VisitFormRegister = () => {
                         <SelectDropDown id={coachId} handleChange={handleChangeCoachNick} values={coaches}/>
                     </Grid>
                     <Grid item xs={5}>
-                        Email:<input required type="email" {...register("email")} /><br/>
+                        Email:<input required type="email" {...register("email")} value={userData.email} /><br/>
                     </Grid>
                     <Grid item xs={5}>
                         GameName:
