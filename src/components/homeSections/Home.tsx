@@ -9,18 +9,21 @@ const GAMES =[
         shortGameName:"CS2",
         description:"Nice game for nice people",
         imgPath:"I tak nie dziala",
+        id:1
     },
     {
         gameName:"Diablo 4",
         shortGameName:"D4",
         description:"Scary game for man",
         imgPath:"I tak nie dziala",
+        id:2
     },
     {
         gameName:"Fifa 2046",
         shortGameName:"Fifa",
         description:"Not for real man",
         imgPath:"I tak nie dziala",
+        id:3
     }
 ]
 
@@ -70,7 +73,8 @@ const Home = () => {
                                 description={game.description}
                                       gameName={game.gameName}
                                       shortGameName={game.shortGameName}
-                                      imgPath={game.imgPath}/>
+                                      imgPath={game.imgPath}
+                                        gameId = {game.id}/>
                         </Grid>
                     ))}
                 </Grid>

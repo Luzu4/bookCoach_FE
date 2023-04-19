@@ -10,7 +10,7 @@ type TableProps = {
     handleButtonSendClick:(id: string | number)=>void
 }
 
-const LessonsTable:React.FC<TableProps> = ({data,handleButtonSendClick})=>{
+const LessonsTableForRegister:React.FC<TableProps> = ({data,handleButtonSendClick})=>{
     const columns: GridColDef[] = [
         { field: 'id', headerName: 'ID', width: 70 },
         { field: 'date', headerName: 'Date', width: 200 },
@@ -37,4 +37,5 @@ const LessonsTable:React.FC<TableProps> = ({data,handleButtonSendClick})=>{
         </div>
     );
 }
-export default LessonsTable;
+
+export default LessonsTableForRegister;

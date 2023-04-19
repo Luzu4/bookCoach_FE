@@ -14,3 +14,26 @@ export interface UserStateData {
     role: string,
     isAuthenticated: boolean
 }
+
+export interface Game {
+    id:number,
+    name:string
+}
+
+export interface Coach {
+    id:number,
+    nickName:string,
+    email:string,
+}
+
+export interface Lesson {
+        id: number;
+        date: string;
+        time: string;
+        playerNote: string;
+        playerId: number;
+        playerEmail: string;
+        game: {};
+        user: {};
+
+    }

@@ -11,6 +11,10 @@ import {useAppDispatch} from "./store/store";
 import {useGetAllByTypeQuery} from './store/bookCoachApi'
 import {useLocalState} from "./store/useLocalStorage";
 import {checkToken} from "./store/userSlice";
+import PrivateRouteCoach from "./store/PrivateRouteCoach";
+import PrivateRoutePlayer from "./store/PrivateRoutePlayer";
+import Coaches from "./components/pages/Coaches";
+import Lessons from "./components/pages/Lessons";
 
 function App() {
 
@@ -36,6 +40,20 @@ function App() {
             <Routes>
                 <Route index element={<Main/>}/>
                 <Route path={"/lessons/register"} element={<VisitFormRegister/>}/>
+                <Route path={"/user/coach/lessons"} element={
+                    <PrivateRouteCoach>
+                    <Lessons/>
+                    </PrivateRouteCoach>
+                }/>
+
+                <Route path={"/user/player/lessons"} element={
+                    <PrivateRoutePlayer>
+                        <Lessons/>
+                    </PrivateRoutePlayer>
+                }/>
+
+                <Route path={"/coaches/game/:id"} element={<Coaches/>}/>
+
             </Routes>
         </div>
     );

@@ -1,53 +1,50 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
+import {Game, Lesson} from "../interfaces";
 
-type Game ={
-    id:number,
-    name:string
-}
 
 type User = {
     id: number,
     email: string,
-    nick_name: string,
+    nickName: string,
     password: string,
     user_type: number,
     details_id: number,
 }
 
-type Lesson =
-    {
-        id:number;
-        date:string;
-        time:string;
-        playerNote: string;
-        playerId:number;
-        playerEmail:string;
-        game:{};
-        user:{};
 
-    }
+const authToken = localStorage.getItem('jwt');
+
+const prepareHeaders = (headers: Headers) => {
+    // @ts-ignore
+    headers.set('Authorization', `Bearer ${JSON.parse(authToken)}`);
+
+
+}
 
 export const bookCoachApi = createApi({
     reducerPath: 'bookCoachApi',
-    baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8080/api/' }),
+    baseQuery: fetchBaseQuery({baseUrl: 'http://localhost:8080/api/',
+        prepareHeaders
+    }),
+
     tagTypes: ['Post'],
     endpoints: (builder) => ({
-        getAllGames: builder.query<Game[],void>({
+        getAllGames: builder.query<Game[], void>({
             query: () => "game/all"
         }),
         getGameById: builder.query<Game, number>({
             query: (id) => `game/${id}`,
         }),
         getAllByType: builder.query<User[], string>({
-            query: (type)=> `user/type/${type}`,
+            query: (type) => `user/type/${type}`,
         }),
         getAllUserGamesByUserId: builder.query<Game[], string>({
-            query: (id)=> `game/user/${id}`,
+            query: (id) => `game/user/${id}`,
         }),
-        getFreeLessonsByGameIdAndUserId: builder.query<Lesson[], { id:string; userId:string }>({
-            query: (arg)=>{
-                const {id,userId} = arg;
-                return`lesson/free/game/${id}/user/${userId}`;
+        getFreeLessonsByGameIdAndUserId: builder.query<Lesson[], { id: string; userId: string }>({
+            query: (arg) => {
+                const {id, userId} = arg;
+                return `lesson/free/game/${id}/user/${userId}`;
             }
         }),
         addNewLesson: builder.mutation({
@@ -72,7 +69,46 @@ export const bookCoachApi = createApi({
             }),
             invalidatesTags: ['Post'],
         }),
+        getAllCoachesByGameId: builder.query<User[], string>({
+                query: (id) => `user/coaches/game/${id}`,
+            }
+        ),
+        getLessonsByPlayerId: builder.query<Lesson[], string>({
+            query: (jwt) => ({
+                url: 'lesson/all/player',
+            })
+        }),
+        getLessonsByCoachId: builder.query<Lesson[], string>({
+            query: (jwt) => ({
+                url: `lesson/all/coach`,
+            })
+        }),
+        removeLessonById: builder.mutation({
+            query:(lessonId)=>({
+                url: `lesson/remove/${lessonId}`,
+                method: "DELETE",
+            })
+        }),
+        removePlayerFromLesson: builder.mutation({
+            query:(lessonId)=>({
+                url: `lesson/remove/player/${lessonId}`,
+                method: "PATCH"
+            })
+        })
+
     }),
 })
 
-export const { useAddPlayerToLessonMutation, useGetAllByTypeQuery, useGetAllUserGamesByUserIdQuery, useGetFreeLessonsByGameIdAndUserIdQuery, useAddNewLessonMutation } = bookCoachApi
+export const {
+    useAddPlayerToLessonMutation,
+    useGetAllByTypeQuery,
+    useGetAllUserGamesByUserIdQuery,
+    useGetFreeLessonsByGameIdAndUserIdQuery,
+    useAddNewLessonMutation,
+    useGetAllGamesQuery,
+    useGetAllCoachesByGameIdQuery,
+    useGetLessonsByPlayerIdQuery,
+    useGetLessonsByCoachIdQuery,
+    useRemoveLessonByIdMutation,
+    useRemovePlayerFromLessonMutation,
+} = bookCoachApi

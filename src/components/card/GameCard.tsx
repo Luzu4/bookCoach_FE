@@ -7,6 +7,7 @@ import CardActions from '@mui/material/CardActions';
 
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import {useNavigate} from "react-router-dom";
 
 
 type CardProps ={
@@ -14,10 +15,12 @@ type CardProps ={
     shortGameName:string;
     description:string;
     imgPath:string;
+    gameId:number;
 }
 
-const GameCard: React.FC<CardProps>= ({ gameName,shortGameName,description,imgPath})=> {
+const GameCard: React.FC<CardProps>= ({gameId, gameName,shortGameName,description,imgPath})=> {
     const loadedImage= require('../images/cs2.jpg');
+    const navigate = useNavigate();
     return (
         <Card sx={{maxWidth: 345}}>
             <CardHeader
@@ -36,7 +39,7 @@ const GameCard: React.FC<CardProps>= ({ gameName,shortGameName,description,imgPa
             </CardContent>
 
                 <CardActions disableSpacing>
-                    <Button variant="outlined" color="error">
+                    <Button onClick={()=>navigate("/coaches/game/"+gameId)} variant="outlined" color="error">
                         Search Coach
                     </Button>
                 </CardActions>

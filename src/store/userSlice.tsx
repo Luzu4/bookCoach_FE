@@ -42,7 +42,7 @@ export const authenticateUser = createAsyncThunk(
 export const checkToken = createAsyncThunk(
     "user/checkToken",
     async (token: string) => {
-        const response = await fetch("api/v1/auth/checktoken", {
+        const response = await fetch("/api/v1/auth/checktoken", {
             method: "post",
             headers: {
                 "Content-Type": "application/json",
@@ -59,6 +59,36 @@ export const checkToken = createAsyncThunk(
         return data;
     }
 );
+
+export const registerUser = createAsyncThunk(
+    "user/authenticate",
+    async (payload: AuthenticatePayload) => {
+        const response = await fetch("api/v1/auth/register", {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            method: "post",
+            body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+            throw new Error("Something went wrong! Try again");
+        }
+
+        const data: ResponseAuthData = await response.json();
+        const decodedToken: TokenData = jwt_decode(data.token);
+
+        const userData: UserStateData = {
+            email: decodedToken.sub,
+            role: decodedToken.role.authority,
+            isAuthenticated: true
+        };
+
+        localStorage.setItem("jwt", "\"" + data.token + "\"");
+        return userData;
+    }
+);
+
 
 const userSlice = createSlice({
     name: 'user',

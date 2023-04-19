@@ -11,7 +11,7 @@ import {
     useGetAllUserGamesByUserIdQuery,
     useGetFreeLessonsByGameIdAndUserIdQuery,
 } from '../../store/bookCoachApi';
-import LessonsTable from "../LessonsTable";
+import LessonsTableForRegister from "../LessonsTableForRegister";
 import {userSelector} from "../../store/userSlice";
 
 type FormValues = {
@@ -135,7 +135,7 @@ const VisitFormRegister = () => {
                         }
                     </Grid>
                     {tableWithLessonView &&
-                        <LessonsTable data={lessonsDataTable} handleButtonSendClick={handleSendButtonClick}/>}
+                        <LessonsTableForRegister data={lessonsDataTable} handleButtonSendClick={handleSendButtonClick}/>}
                     <Grid item xs={10}>
                     </Grid>
                 </Grid>

@@ -17,7 +17,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import {useForm, SubmitHandler} from "react-hook-form";
 import {useAppDispatch} from "../../store/store";
-import {authenticateUser, userSelector} from "../../store/userSlice";
+import { registerUser, userSelector} from "../../store/userSlice";
 import {useSelector} from "react-redux";
 import {useEffect} from "react";
 
@@ -64,7 +64,7 @@ const Signup: React.FC = () => {
             password: data.password
         };
         if(data.password === data.confirmPassword){
-            dispatch(authenticateUser(reqBody));
+            dispatch(registerUser(reqBody));
         }else{
             alert("passwords must be identical")
         }

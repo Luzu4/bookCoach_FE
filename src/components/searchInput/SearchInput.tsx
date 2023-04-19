@@ -1,82 +1,59 @@
 import * as React from 'react';
-import TextField from '@mui/material/TextField';
-import Autocomplete, {createFilterOptions} from '@mui/material/Autocomplete';
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import {useGetAllGamesQuery} from "../../store/bookCoachApi";
+import {Game} from "../../interfaces";
+import {useEffect, useState} from "react";
+import Button from "@mui/material/Button";
+import {Link, useNavigate} from "react-router-dom";
 
+export default function BasicSelect() {
+    const [game, setGame] = React.useState('');
+    const {data:allGamesData} = useGetAllGamesQuery();
+    const [games, setGames] = useState<Game[]>([]);
 
-const top100Films: readonly FilmOptionType[] = [
-    {title: 'Diablo 4', year: 1994},
-    {title: 'Diablo 4', year: 1972},
-    {title: 'The God of War', year: 1974},
+    const navigate = useNavigate();
 
-];
+    const handleChange = (event: SelectChangeEvent) => {
+        setGame(event.target.value as string);
+    };
 
-interface FilmOptionType {
-    inputValue?: string;
-    title: string;
-    year?: number;
-}
+    const handleFindCoachClick = ()=>{
+        if(game){
+            navigate("/coaches/game/"+game)
+        }
 
-const filter = createFilterOptions<FilmOptionType>();
+    }
 
-export default function SearchInput() {
-    const [value, setValue] = React.useState<FilmOptionType | null>(null);
-
+    useEffect(()=>{
+        if(allGamesData){
+            setGames(allGamesData);
+        }
+    },[allGamesData])
     return (
-        <Autocomplete
-            style={{background: '#E9B872'}}
-            value={value}
-            onChange={(event, newValue) => {
-                if (typeof newValue === 'string') {
-                    setValue({
-                        title: newValue,
-                    });
-                } else if (newValue && newValue.inputValue) {
-                    // Create a new value from the user input
-                    setValue({
-                        title: newValue.inputValue,
-                    });
-                } else {
-                    setValue(newValue);
-                }
-            }}
-            filterOptions={(options, params) => {
-                const filtered = filter(options, params);
+        <>
+        <Box sx={{ minWidth: 120 }}>
+            <FormControl fullWidth style={{background: "#E9B872"}}>
+                <InputLabel id="demo-simple-select-label">Game</InputLabel>
+                <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={game}
+                    label="Age"
+                    onChange={handleChange}
+                >
 
-                const {inputValue} = params;
-                // Suggest the creation of a new value
-                const isExisting = options.some((option) => inputValue === option.title);
-                if (inputValue !== '' && !isExisting) {
-                    filtered.push({
-                        inputValue,
-                        title: `Add "${inputValue}"`,
-                    });
-                }
+                    {games.map(game=>(
+                        <MenuItem value={game.id}>{game.name}</MenuItem>
+                    ))}
 
-                return filtered;
-            }}
-            selectOnFocus
-            clearOnBlur
-            handleHomeEndKeys
-            id="free-solo-with-text-demo"
-            options={top100Films}
-            getOptionLabel={(option) => {
-                // Value selected with enter, right from the input
-                if (typeof option === 'string') {
-                    return option;
-                }
-                // Add "xxx" option created dynamically
-                if (option.inputValue) {
-                    return option.inputValue;
-                }
-                // Regular option
-                return option.title;
-            }}
-            renderOption={(props, option) => <li {...props}>{option.title}</li>}
-            sx={{width: 300}}
-            freeSolo
-            renderInput={(params) => (
-                <TextField {...params} label="Find Your Game"/>
-            )}
-        />
+                </Select>
+            </FormControl>
+            <Button onClick={handleFindCoachClick}>Find Coach!</Button>
+        </Box>
+        </>
     );
 }

@@ -10,11 +10,12 @@ import userSlice, {userSelector} from "../../store/userSlice";
 import {useSelector} from "react-redux";
 import {useLocalState} from "../../store/useLocalStorage";
 import Signup from "../modal/Signup";
+import {Link} from "react-router-dom";
 
 export default function NavBar() {
 
     const userData = useSelector(userSelector);
-    const [jwt,setJwt] = useLocalState("","jwt");
+    const [jwt, setJwt] = useLocalState("", "jwt");
     const handleLogoutClick = () => {
         localStorage.setItem("jwt", "\"\"");
         setJwt("");
@@ -23,22 +24,26 @@ export default function NavBar() {
 
 
     return (
-        <Box sx={{ flexGrow: 1 }} >
+        <Box sx={{flexGrow: 1}}>
             <AppBar position="static">
                 <Toolbar className="navBar">
-                    <div onClick={()=>{
-                        window.location.href="/"}}>
-                    <Typography onClick={()=>{}} variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        BOOK COACH
-                    </Typography>
+                    <div onClick={() => {
+                        window.location.href = "/"
+                    }}>
+                        <Typography onClick={() => {
+                        }} variant="h6" component="div" sx={{flexGrow: 1}}>
+                            BOOK COACH
+                        </Typography>
                     </div>
+
+                    {userData.isAuthenticated ? <div>
+                    {userData.role === "PLAYER" ? <Link to={"/user/player/lessons"}>MyLessons</Link> : <Link to={"/user/coach/lessons"}>MyLessons</Link> }
+                    </div> : ""}
                     <div>
-                    <Button color="inherit">Login/Register</Button>
+                        {userData.isAuthenticated ? <Button onClick={handleLogoutClick}>Logout </Button> :
+                            <div><LoginModal/> <Signup/></div>}
                     </div>
 
-                    <div>{userData.isAuthenticated ? <Button onClick={handleLogoutClick}>Logout </Button> : <div><LoginModal/> <Signup/></div> }
-
-                    </div>
                 </Toolbar>
             </AppBar>
         </Box>
