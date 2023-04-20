@@ -99,7 +99,21 @@ export const bookCoachApi = createApi({
             query:(date)=>({
                 url: `lesson/all/coach/date/${date}`
             })
+        }),
+        getGamesByUser: builder.query<Game[], string>({
+            query:()=>({
+                url:`game/user`
+            })
+        }),
+        addNewLessons: builder.mutation({
+            query:(payload)=>({
+                url : `lesson/add`,
+                method: "PUT",
+                body:payload,
+
+            })
         })
+
 
     }),
 })
@@ -117,4 +131,6 @@ export const {
     useRemoveLessonByIdMutation,
     useRemovePlayerFromLessonMutation,
     useGetLessonsByUserIdAndDateQuery,
+    useGetGamesByUserQuery,
+    useAddNewLessonsMutation,
 } = bookCoachApi

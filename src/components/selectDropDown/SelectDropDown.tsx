@@ -1,22 +1,27 @@
 import React from 'react';
 import Select, {SelectChangeEvent} from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import {InputLabel} from "@mui/material";
 
 
 type SelectProps = {
     id: string,
-    handleChange: (event: SelectChangeEvent)=>void,
-    values: {    id: number;
+    handleChange: (event: SelectChangeEvent) => void,
+    values: {
+        id: number;
         nickName?: string;
-    name?:string;
-    }[]
+        name?: string;
+    }[],
+
 }
 
 const SelectDropDown: React.FC<SelectProps> = ({id, handleChange, values}) => {
     return (
+        <>
+
         <Select
-            labelId="demo-simple-select-autowidth-label"
-            id="demo-simple-select-autowidth"
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
             value={id}
             onChange={handleChange}
             autoWidth
@@ -32,6 +37,7 @@ const SelectDropDown: React.FC<SelectProps> = ({id, handleChange, values}) => {
                 <MenuItem key={value.id} value={value.id}>{value.nickName || value.name}</MenuItem>
             ))}
         </Select>
+        </>
     );
 };
 
