@@ -74,12 +74,12 @@ export const bookCoachApi = createApi({
             }
         ),
         getLessonsByPlayerId: builder.query<Lesson[], string>({
-            query: (jwt) => ({
+            query: () => ({
                 url: 'lesson/all/player',
             })
         }),
         getLessonsByCoachId: builder.query<Lesson[], string>({
-            query: (jwt) => ({
+            query: () => ({
                 url: `lesson/all/coach`,
             })
         }),
@@ -93,6 +93,11 @@ export const bookCoachApi = createApi({
             query:(lessonId)=>({
                 url: `lesson/remove/player/${lessonId}`,
                 method: "PATCH"
+            })
+        }),
+        getLessonsByUserIdAndDate: builder.query<Lesson[], string>({
+            query:(date)=>({
+                url: `lesson/all/coach/date/${date}`
             })
         })
 
@@ -111,4 +116,5 @@ export const {
     useGetLessonsByCoachIdQuery,
     useRemoveLessonByIdMutation,
     useRemovePlayerFromLessonMutation,
+    useGetLessonsByUserIdAndDateQuery,
 } = bookCoachApi
