@@ -22,16 +22,18 @@ function App() {
 
     const dispatch = useAppDispatch();
 
-    const [jwt, setJwt] = useLocalState("", "jwt");
+    const [jwt] = useLocalState("", "jwt");
 
-    if (jwt) {
-        dispatch(checkToken(jwt));
-    }
+    useEffect(()=>{
+        if (jwt) {
+            dispatch(checkToken(jwt));
+        }
+    },[])
+
 
 
     useEffect(()=>{
         dispatch(coachesActions.replaceCoaches(allCoaches))
-
     },[dispatch,allCoaches]);
 
     return (
@@ -45,15 +47,12 @@ function App() {
                     <Lessons/>
                     </PrivateRouteCoach>
                 }/>
-
                 <Route path={"/user/player/lessons"} element={
                     <PrivateRoutePlayer>
                         <Lessons/>
                     </PrivateRoutePlayer>
                 }/>
-
                 <Route path={"/coaches/game/:id"} element={<Coaches/>}/>
-
             </Routes>
         </div>
     );

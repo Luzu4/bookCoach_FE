@@ -47,7 +47,7 @@ export default function BasicSelect() {
                 >
 
                     {games.map(game=>(
-                        <MenuItem value={game.id}>{game.name}</MenuItem>
+                        <MenuItem key={game.id} value={game.id}>{game.name}</MenuItem>
                     ))}
 
                 </Select>

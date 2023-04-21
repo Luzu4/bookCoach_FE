@@ -13,7 +13,7 @@ const defaultUserState: UserStateData = {email: "", role: "", isAuthenticated: f
 export const authenticateUser = createAsyncThunk(
     "user/authenticate",
     async (payload: AuthenticatePayload) => {
-        const response = await fetch("api/v1/auth/authenticate", {
+        const response = await fetch("/api/v1/auth/authenticate", {
             headers: {
                 "Content-Type": "application/json",
             },

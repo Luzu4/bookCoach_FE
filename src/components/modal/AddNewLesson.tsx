@@ -12,14 +12,11 @@ import {Dayjs} from "dayjs";
 import MultiSelectDropDown from "../selectDropDown/MultiSelectDropDown";
 import {
     useAddNewLessonsMutation,
-    useGetAllUserGamesByUserIdQuery,
     useGetGamesByUserQuery,
-    useGetLessonsByUserIdAndDateQuery
+    useGetLessonsByUserIdAndDateQuery,
 } from "../../store/bookCoachApi";
 import {Game, Lesson} from "../../interfaces";
 import SelectDropDown from "../selectDropDown/SelectDropDown";
-import {userSelector} from "../../store/userSlice";
-import {useSelector} from "react-redux";
 import {SelectChangeEvent} from "@mui/material/Select";
 
 
@@ -63,15 +60,10 @@ const LoginModal: React.FC = () => {
         }
     }, [userGamesFetch])
 
-    const {data: lessonAlreadyAddedFetch} = useGetLessonsByUserIdAndDateQuery(dateToAddLesson?.format("YYYY-MM-DD") + "")
+    const {data: lessonAlreadyAddedFetch} = useGetLessonsByUserIdAndDateQuery(dateToAddLesson?.format("YYYY-MM-DD") + "", {skip:!dateToAddLesson})
     const [addNewLessons] = useAddNewLessonsMutation();
 
     const handleAddButtonClick = () => {
-        console.log(lessonHours);
-        console.log(dateToAddLesson);
-        console.log(gameId);
-
-
         if(lessonHours.length>0 && dateToAddLesson && gameId){
             let lessonsDataToSave = {
                 "date": dateToAddLesson.format("YYYY-MM-DD"),
@@ -80,18 +72,16 @@ const LoginModal: React.FC = () => {
             }
             addNewLessons(lessonsDataToSave).unwrap()
                 .then(()=>{
+                })
 
-                }).then((error)=>{
-                    console.log(error)
-            })
         }
-
     }
 
     const handleDateChange = (newDateToAddLesson: any) => {
         setDateToAddLesson(newDateToAddLesson);
         setAvailableHours(allHours);
     }
+
 
     useEffect(() => {
         if (lessonAlreadyAddedFetch) {

@@ -1,31 +1,32 @@
-import {DataGrid, GridColDef, GridRowId} from "@mui/x-data-grid";
+import {DataGrid, GridColDef} from "@mui/x-data-grid";
 import Button from '@mui/material/Button';
-import ScheduleSendIcon from '@mui/icons-material/ScheduleSend';
 import React from "react";
 import {Lesson} from "../../interfaces";
 import {useSelector} from "react-redux";
 import {userSelector} from "../../store/userSlice";
-import {useRemoveLessonByIdMutation, useRemovePlayerFromLessonMutation} from "../../store/bookCoachApi";
 
 
 type TableProps = {
     data: Lesson[],
+    handleDeleteButton: any,
+    handleUnbookButton: any,
 }
 
-const LessonsTableList: React.FC<TableProps> = ({data}) => {
+const LessonsTableList: React.FC<TableProps> = ({data, handleDeleteButton, handleUnbookButton}) => {
 
     const userData = useSelector(userSelector);
 
-   const [deleteLesson, response] = useRemoveLessonByIdMutation();
-   const [deletePlayerFromLesson, responsex] = useRemovePlayerFromLessonMutation();
+
+
+
 
     const columns: GridColDef[] = [
-        {field: 'id', headerName: 'ID', width: 70},
-        {field: 'date', headerName: 'Date', width: 200},
-        {field: 'time', headerName: 'Time', width: 200},
-        {field: 'userId', headerName: 'Coach Nick', width: 200},
-        {field: 'gameName', headerName: 'Game', width: 200},
-        {field: 'status', headerName: 'status', width: 130,},
+        {field: 'id', headerName: 'ID', width: 70, flex: 0.1},
+        {field: 'date', headerName: 'Date', width: 200, flex: 0.1},
+        {field: 'time', headerName: 'Time', width: 200, flex: 0.1},
+        {field: 'user', headerName: 'Coach Nick', width: 200, flex: 0.1},
+        {field: 'game', headerName: 'Game', width: 200, flex: 0.1},
+        {field: 'status', headerName: 'status', width: 130, flex: 0.1},
         {
             field: 'action',
             filterable: false,
@@ -33,9 +34,9 @@ const LessonsTableList: React.FC<TableProps> = ({data}) => {
             headerName: 'Actions',
             sortable: false,
             renderCell: (params) => {
-                return <div>{(userData.role === "COACH") ? <Button onClick={()=>deleteLesson(params.id)}
-                                    color="secondary">DELETE</Button>:
-                    <Button onClick={() => deletePlayerFromLesson(params.id)}
+                return <div>{(userData.role === "COACH") ? <Button onClick={() => handleDeleteButton(params.id) }
+                                                                   color="secondary">DELETE</Button> :
+                    <Button onClick={() => handleUnbookButton(params.id)}
                             color="secondary">UNBOOK</Button>}</div>
 
                     ;

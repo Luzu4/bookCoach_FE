@@ -1,11 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import LessonsTableList from "../tables/LessonTableList";
-import {useGetLessonsByCoachIdQuery, useGetLessonsByPlayerIdQuery} from "../../store/bookCoachApi";
+import {
+    useGetLessonsByCoachIdQuery,
+    useGetLessonsByPlayerIdQuery,
+    useRemoveLessonByIdMutation, useRemovePlayerFromLessonMutation
+} from "../../store/bookCoachApi";
 import {useSelector} from "react-redux";
 import {userSelector} from "../../store/userSlice";
 import {Lesson} from "../../interfaces";
 import {useLocalState} from "../../store/useLocalStorage";
-import Button from "@mui/material/Button";
 import AddNewLesson from "../modal/AddNewLesson";
 
 
@@ -19,8 +22,8 @@ const Lessons = () => {
 
     const [tableData, setTableData] = useState<Lesson[]>([]);
 
-    useEffect(() => {
 
+    useEffect(() => {
         if (lessonsForCoach && userData.role === "COACH") {
             setTableData(lessonsForCoach);
         }
@@ -28,12 +31,29 @@ const Lessons = () => {
             setTableData(lessonsForPlayer);
         }
     }, [lessonsForCoach, lessonsForPlayer])
+    const [deleteLesson, response] = useRemoveLessonByIdMutation();
+    const handleDeleteButton = (lessonId: any)=>{
+        deleteLesson(lessonId);
+        const index:number = tableData.findIndex(lesson => lesson.id === lessonId);
+        const tableDataCopy = [...tableData];
+        tableDataCopy.splice( index,1);
+        setTableData(tableDataCopy);
+    }
+
+    const [deletePlayerFromLesson, responsex] = useRemovePlayerFromLessonMutation();
+    const handleUnbookButton = (lessonId: any)=>{
+        deletePlayerFromLesson(lessonId);
+        const index:number = tableData.findIndex(lesson => lesson.id === lessonId);
+        const tableDataCopy = [...tableData];
+        tableDataCopy.splice( index,1);
+        setTableData(tableDataCopy);
+    }
 
 
     return (
         <div>
-            <AddNewLesson/>
-            <LessonsTableList data={tableData}/>
+            {userData.role === "COACH" ? <AddNewLesson/> : "" }
+            <LessonsTableList data={tableData} handleDeleteButton={handleDeleteButton} handleUnbookButton={handleUnbookButton}/>
         </div>
     );
 };

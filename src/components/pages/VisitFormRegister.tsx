@@ -51,9 +51,12 @@ const VisitFormRegister = () => {
         setCoaches(coachesStore);
     }, [coachesStore]);
 
+
     const [coachId, setCoachId] = React.useState('');
     const handleChangeCoachNick = (event: SelectChangeEvent) => {
+        setGameId('');
         setCoachId(event.target.value);
+        setTableWithLessonView(false);
     };
     const [games, setGames] = useState<Game[]>([]);
     const {data} = useGetAllUserGamesByUserIdQuery(coachId, {skip: !coachId});
@@ -96,7 +99,9 @@ const VisitFormRegister = () => {
     }
 
     const [email, setEmail] = useState("");
-
+    useEffect(()=>{
+        setEmail(userData.email)
+    },[])
     const [addPlayerToLesson] = useAddPlayerToLessonMutation()
     const handleSendButtonClick = (id: string | number) => {
         if (lessonsData && email.length > 3) {
@@ -108,6 +113,7 @@ const VisitFormRegister = () => {
                 .then(() => {
                 })
                 .then((error) => {
+                    console.log("HEJ")
                     console.log(error)
                 })
         }
@@ -126,7 +132,8 @@ const VisitFormRegister = () => {
                         <SelectDropDown id={coachId} handleChange={handleChangeCoachNick} values={coaches}/>
                     </Grid>
                     <Grid item xs={5}>
-                        Email:<input required type="email" {...register("email")} value={userData.email} /><br/>
+                        Email:<input required type="email" {...register("email")} value={email}
+                                     onChange={event => setEmail(event.target.value)}/><br/>
                     </Grid>
                     <Grid item xs={5}>
                         GameName:
@@ -135,7 +142,8 @@ const VisitFormRegister = () => {
                         }
                     </Grid>
                     {tableWithLessonView &&
-                        <LessonsTableForRegister data={lessonsDataTable} handleButtonSendClick={handleSendButtonClick}/>}
+                        <LessonsTableForRegister data={lessonsDataTable}
+                                                 handleButtonSendClick={handleSendButtonClick}/>}
                     <Grid item xs={10}>
                     </Grid>
                 </Grid>
