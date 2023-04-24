@@ -15,6 +15,9 @@ import PrivateRouteCoach from "./store/PrivateRouteCoach";
 import PrivateRoutePlayer from "./store/PrivateRoutePlayer";
 import Coaches from "./components/pages/Coaches";
 import Lessons from "./components/pages/Lessons";
+import Users from "./components/pages/Users";
+import jwt_decode from "jwt-decode";
+import {TokenData} from "./interfaces";
 
 function App() {
 
@@ -22,11 +25,18 @@ function App() {
 
     const dispatch = useAppDispatch();
 
-    const [jwt] = useLocalState("", "jwt");
+    const [jwt,setJwt] = useLocalState("", "jwt");
 
     useEffect(()=>{
-        if (jwt) {
-            dispatch(checkToken(jwt));
+        if(jwt){
+            const decodedToken: TokenData = jwt_decode(jwt);
+            if(Date.now() >= decodedToken.exp*1000){
+                localStorage.setItem("jwt", "\"\"");
+                setJwt("");
+                window.location.href = "/";
+            }else{
+                dispatch(checkToken(jwt));
+            }
         }
     },[])
 
@@ -53,6 +63,7 @@ function App() {
                     </PrivateRoutePlayer>
                 }/>
                 <Route path={"/coaches/game/:id"} element={<Coaches/>}/>
+                <Route path={"/users"} element={<Users/>}/>
             </Routes>
         </div>
     );

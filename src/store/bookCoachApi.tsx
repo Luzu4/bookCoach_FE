@@ -1,15 +1,8 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
-import {Game, Lesson} from "../interfaces";
+import {Game, Lesson, User, UserForTable} from "../interfaces";
 
 
-type User = {
-    id: number,
-    email: string,
-    nickName: string,
-    password: string,
-    user_type: number,
-    details_id: number,
-}
+
 
 
 const authToken = localStorage.getItem('jwt');
@@ -112,6 +105,18 @@ export const bookCoachApi = createApi({
                 body:payload,
 
             })
+        }),
+        getAllUsers: builder.query<UserForTable[], string>({
+            query: ()=>({
+                url:`user/all`
+            })
+        }),
+        updateUserGames: builder.mutation({
+            query:(payload)=>({
+                url: `user/admin/edit`,
+                method: "PATCH",
+                body:payload
+            })
         })
 
 
@@ -133,4 +138,6 @@ export const {
     useGetLessonsByUserIdAndDateQuery,
     useGetGamesByUserQuery,
     useAddNewLessonsMutation,
+    useGetAllUsersQuery,
+    useUpdateUserGamesMutation
 } = bookCoachApi

@@ -7,6 +7,7 @@ export interface ResponseAuthData {
 export interface TokenData {
     role: { authority: string },
     sub: string,
+    exp:number,
 }
 
 export interface UserStateData {
@@ -37,3 +38,34 @@ export interface Lesson {
         user: {};
 
     }
+
+export interface User {
+    id: number;
+    email: string;
+    nickName: string;
+    password: string;
+    user_type: number;
+    details_id: number;
+}
+
+export interface UserDetails{
+    id:number;
+    language: string;
+    country: string;
+    city: string;
+    game: Game[];
+}
+
+export interface UserForTable {
+    id: number;
+    email:string;
+    nickName: string;
+    role: string;
+    userDetails: UserDetails[];
+}
+
+export enum Role {
+    ADMIN="ADMIN",
+    COACH = "COACH",
+    PLAYER = "PLAYER",
+}
