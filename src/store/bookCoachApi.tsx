@@ -134,6 +134,20 @@ export const bookCoachApi = createApi({
                 method:"PATCH",
                 body:payload
             })
+        }),
+        updateGameData:builder.mutation({
+            query:(payload)=>({
+                url:`game/edit`,
+                method:"PATCH",
+                body:payload
+            })
+        }),
+        addNewGame:builder.mutation({
+            query:(payload)=>({
+                url:`game/add`,
+                method:"PUT",
+                body:payload,
+            })
         })
 
 
@@ -161,4 +175,7 @@ export const {
     useGetHappyStudentsQuery,
     useGetUserByEmailQuery,
     useUpdateUserDataMutation,
+    useUpdateGameDataMutation,
+    useAddNewGameMutation,
+
 } = bookCoachApi

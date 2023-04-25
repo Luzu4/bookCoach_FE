@@ -14,6 +14,7 @@ import jwt_decode from "jwt-decode";
 import {Role, TokenData} from "./interfaces";
 import PrivateRouteRole from "./store/PrivateRouteRole";
 import EditUserData from "./components/modal/EditUserData";
+import Games from "./components/pages/Games";
 
 function App() {
 
@@ -52,6 +53,12 @@ function App() {
                 }/>
                 <Route path={"/coaches/game/:id"} element={<Coaches/>}/>
                 <Route path={"/users"} element={<Users/>}/>
+                <Route path={"/games"} element={
+                    <PrivateRouteRole roles={[Role.ADMIN]}>
+                        <Games/>
+                    </PrivateRouteRole>
+
+                }/>
             </Routes>
         </div>
     );

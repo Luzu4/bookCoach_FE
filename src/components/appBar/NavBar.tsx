@@ -39,10 +39,11 @@ export default function NavBar() {
                     {userData.isAuthenticated ? <EditUserData/> : ""}
 
                     {userData.isAuthenticated ? <div>
-                    {userData.role === "PLAYER" ? <Link to={"/user/player/lessons"}>MyLessons</Link> : "" }
-                        {userData.role === "COACH" ? <Link to={"/user/coach/lessons"}>MyLessons</Link> : "" }
+                        {userData.role === "PLAYER" ? <Link to={"/user/player/lessons"}>MyLessons</Link> : ""}
+                        {userData.role === "ADMIN" ? <Link to={"/games"}>Games </Link> : ""}
+                        {userData.role === "COACH" ? <Link to={"/user/coach/lessons"}>MyLessons</Link> : ""}
                     </div> : ""}
-                    {(userData.isAuthenticated && userData.role === "ADMIN") ? <Link to={"/users"}>USERS</Link> : ""}
+                    {(userData.isAuthenticated && userData.role === "ADMIN") ? <Link to={"/users"}> USERS </Link> : ""}
                     <div>
                         {userData.isAuthenticated ? <Button onClick={handleLogoutClick}>Logout </Button> :
                             <div><LoginModal/> <Signup/></div>}
