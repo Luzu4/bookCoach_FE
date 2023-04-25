@@ -70,7 +70,14 @@ export interface UserForTable {
 }
 
 export enum Role {
-    ADMIN="ADMIN",
+    ADMIN= "ADMIN",
     COACH = "COACH",
     PLAYER = "PLAYER",
+}
+
+export interface HappyStudent {
+    id: number;
+    name: string;
+    description: string;
+    imageUrl: string;
 }

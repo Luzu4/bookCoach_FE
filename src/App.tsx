@@ -1,27 +1,21 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
 import Header from "./components/header/Header";
 import Main from "./components/main/Main";
 import {Route, Routes} from "react-router";
 import VisitFormRegister from "./components/pages/VisitFormRegister";
-
-import {useEffect} from "react";
-import {coachesActions} from "./store/coachesSlice";
 import {useAppDispatch} from "./store/store";
-import {useGetAllByTypeQuery} from './store/bookCoachApi'
 import {useLocalState} from "./store/useLocalStorage";
 import {checkToken} from "./store/userSlice";
-import PrivateRouteCoach from "./store/PrivateRouteCoach";
-import PrivateRoutePlayer from "./store/PrivateRoutePlayer";
 import Coaches from "./components/pages/Coaches";
 import Lessons from "./components/pages/Lessons";
 import Users from "./components/pages/Users";
 import jwt_decode from "jwt-decode";
-import {TokenData} from "./interfaces";
+import {Role, TokenData} from "./interfaces";
+import PrivateRouteRole from "./store/PrivateRouteRole";
+import EditUserData from "./components/modal/EditUserData";
 
 function App() {
-
-    const{data:allCoaches} = useGetAllByTypeQuery("coach");
 
     const dispatch = useAppDispatch();
 
@@ -39,13 +33,6 @@ function App() {
             }
         }
     },[])
-
-
-
-    useEffect(()=>{
-        dispatch(coachesActions.replaceCoaches(allCoaches))
-    },[dispatch,allCoaches]);
-
     return (
         <div className="App">
             <Header/>
@@ -53,14 +40,15 @@ function App() {
                 <Route index element={<Main/>}/>
                 <Route path={"/lessons/register"} element={<VisitFormRegister/>}/>
                 <Route path={"/user/coach/lessons"} element={
-                    <PrivateRouteCoach>
+
+                        <PrivateRouteRole roles={[Role.COACH]}>
                     <Lessons/>
-                    </PrivateRouteCoach>
+                        </PrivateRouteRole>
                 }/>
                 <Route path={"/user/player/lessons"} element={
-                    <PrivateRoutePlayer>
+                        <PrivateRouteRole roles={[Role.PLAYER]}>
                         <Lessons/>
-                    </PrivateRoutePlayer>
+                        </PrivateRouteRole>
                 }/>
                 <Route path={"/coaches/game/:id"} element={<Coaches/>}/>
                 <Route path={"/users"} element={<Users/>}/>

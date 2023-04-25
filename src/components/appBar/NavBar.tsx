@@ -11,6 +11,7 @@ import {useSelector} from "react-redux";
 import {useLocalState} from "../../store/useLocalStorage";
 import Signup from "../modal/Signup";
 import {Link} from "react-router-dom";
+import EditUserData from "../modal/EditUserData";
 
 export default function NavBar() {
 
@@ -35,9 +36,11 @@ export default function NavBar() {
                             BOOK COACH
                         </Typography>
                     </div>
+                    {userData.isAuthenticated ? <EditUserData/> : ""}
 
                     {userData.isAuthenticated ? <div>
-                    {userData.role === "PLAYER" ? <Link to={"/user/player/lessons"}>MyLessons</Link> : <Link to={"/user/coach/lessons"}>MyLessons</Link> }
+                    {userData.role === "PLAYER" ? <Link to={"/user/player/lessons"}>MyLessons</Link> : "" }
+                        {userData.role === "COACH" ? <Link to={"/user/coach/lessons"}>MyLessons</Link> : "" }
                     </div> : ""}
                     {(userData.isAuthenticated && userData.role === "ADMIN") ? <Link to={"/users"}>USERS</Link> : ""}
                     <div>

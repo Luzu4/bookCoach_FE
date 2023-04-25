@@ -7,12 +7,13 @@ import {useSelector} from "react-redux";
 import {coachesSelector} from "../../store/coachesSlice"
 import SelectDropDown from "../selectDropDown/SelectDropDown";
 import {
-    useAddPlayerToLessonMutation,
+    useAddPlayerToLessonMutation, useGetAllByTypeQuery,
     useGetAllUserGamesByUserIdQuery,
     useGetFreeLessonsByGameIdAndUserIdQuery,
 } from '../../store/bookCoachApi';
 import LessonsTableForRegister from "../LessonsTableForRegister";
 import {userSelector} from "../../store/userSlice";
+import {User} from "../../interfaces";
 
 type FormValues = {
     email: string;
@@ -44,12 +45,15 @@ type Lesson =
     }
 
 const VisitFormRegister = () => {
-    const [coaches, setCoaches] = useState<Coach[]>([]);
-    const coachesStore = useSelector(coachesSelector);
+    const [coaches, setCoaches] = useState<User[]>([]);
+    const{data:allCoaches} = useGetAllByTypeQuery("coach");
     const userData = useSelector(userSelector);
     useEffect(() => {
-        setCoaches(coachesStore);
-    }, [coachesStore]);
+        if(allCoaches){
+            setCoaches(allCoaches);
+        }
+
+    }, [allCoaches]);
 
 
     const [coachId, setCoachId] = React.useState('');

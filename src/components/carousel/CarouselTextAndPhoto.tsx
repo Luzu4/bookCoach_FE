@@ -9,37 +9,28 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import SwipeableViews from 'react-swipeable-views';
 import { autoPlay } from 'react-swipeable-views-utils';
+import {useGetHappyStudentsQuery} from "../../store/bookCoachApi";
+import {useEffect, useState} from "react";
+import {HappyStudent} from "../../interfaces";
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
-const CSPHOTO = require('../images/cs2.jpg');
-const LUZPHOTO = require('../images/luz.jpg');
-const images = [
-    {
-        label: 'San Francisco – Oakland Bay Bridge, United States',
-        imgPath:CSPHOTO,
-    },
-    {
-        label: 'Bird',
-        imgPath:LUZPHOTO,
-    },
-    {
-        label: 'Bali, Indonesia',
-        imgPath:CSPHOTO,
-    },
-    {
-        label: 'Goč, Serbia',
-        imgPath:LUZPHOTO,
-    },
-    {
-        label: 'Gočss, Serbsssia',
-        imgPath:LUZPHOTO,
-    },
-];
-
 function CarouselTextAndPhoto() {
+
+    const {data:happyStudentsDataFetch} = useGetHappyStudentsQuery("");
+    const [happyStudents, setHappyStudents] = useState<HappyStudent[]>();
+
+    useEffect(()=>{
+        setHappyStudents(happyStudentsDataFetch)
+    },[happyStudentsDataFetch])
+
+
     const theme = useTheme();
     const [activeStep, setActiveStep] = React.useState(0);
-    const maxSteps = images.length;
+    let maxSteps = 0
+
+    if(happyStudents){
+        maxSteps = happyStudents?.length;
+    }
 
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -66,7 +57,8 @@ function CarouselTextAndPhoto() {
                     bgcolor: 'background.default',
                 }}
             >
-                <Typography>{images[activeStep].label}</Typography>
+                {happyStudents ? <Typography>{happyStudents[activeStep].name} - {happyStudents[activeStep]?.description}</Typography>: ""}
+
             </Paper>
             <AutoPlaySwipeableViews
                 axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
@@ -74,8 +66,8 @@ function CarouselTextAndPhoto() {
                 onChangeIndex={handleStepChange}
                 enableMouseEvents
             >
-                {images.map((step, index) => (
-                    <div key={step.label}>
+                {happyStudents ? happyStudents?.map((step, index) => (
+                    <div key={step.id}>
                         {Math.abs(activeStep - index) <= 2 ? (
                             <Box
                                 component="img"
@@ -86,13 +78,16 @@ function CarouselTextAndPhoto() {
                                     overflow: 'hidden',
                                     width: '100%',
                                 }}
-                                src={step.imgPath}
-                                alt={step.label}
+                                src={step.imageUrl}
+                                alt={step.description}
+                                title={"HEJ"}
                             />
                         ) : null}
                     </div>
-                ))}
+                )): <></>}
+
             </AutoPlaySwipeableViews>
+
             <MobileStepper
                 steps={maxSteps}
                 position="static"

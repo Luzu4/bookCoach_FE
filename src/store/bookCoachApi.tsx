@@ -117,6 +117,23 @@ export const bookCoachApi = createApi({
                 method: "PATCH",
                 body:payload
             })
+        }),
+        getHappyStudents: builder.query({
+            query:()=>({
+                url: `happy`
+            })
+        }),
+        getUserByEmail: builder.query({
+            query: (userEmail)=>({
+                url: `user/${userEmail}`
+            })
+        }),
+        updateUserData: builder.mutation({
+            query:(payload)=>({
+                url: `user/edit`,
+                method:"PATCH",
+                body:payload
+            })
         })
 
 
@@ -140,5 +157,8 @@ export const {
     useAddNewLessonsMutation,
     useGetAllUsersQuery,
     useUpdateUserGamesMutation,
-    useGetGameByIdQuery
+    useGetGameByIdQuery,
+    useGetHappyStudentsQuery,
+    useGetUserByEmailQuery,
+    useUpdateUserDataMutation,
 } = bookCoachApi
