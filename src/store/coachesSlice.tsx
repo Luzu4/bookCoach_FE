@@ -4,11 +4,12 @@ import {RootState} from "./store";
 type CoachesState = {
     id: number,
     nickName: string,
-    detailsId: number
-}[]
+    detailsId: number,
+    username:string,
+}
 
 
-const defaultCoachesState: CoachesState = [];
+const defaultCoachesState: CoachesState[] = [];
 
 const coachesSlice = createSlice({
     name: 'coaches',

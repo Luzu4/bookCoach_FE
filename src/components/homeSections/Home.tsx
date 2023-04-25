@@ -1,34 +1,36 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Grid} from "@mui/material";
 import SearchInput from "../searchInput/SearchInput";
 import GameCard from "../card/GameCard";
+import {useGetAllGamesQuery} from "../../store/bookCoachApi";
+import {Game} from "../../interfaces";
 
-const GAMES =[
-    {
-        gameName:"Counter-Strike",
-        shortGameName:"CS2",
-        description:"Nice game for nice people",
-        imgPath:"I tak nie dziala",
-        id:1
-    },
-    {
-        gameName:"Diablo 4",
-        shortGameName:"D4",
-        description:"Scary game for man",
-        imgPath:"I tak nie dziala",
-        id:2
-    },
-    {
-        gameName:"Fifa 2046",
-        shortGameName:"Fifa",
-        description:"Not for real man",
-        imgPath:"I tak nie dziala",
-        id:3
+function getRandom(arr:Game[], n:number) {
+    var result = new Array(n),
+        len = arr.length,
+        taken = new Array(len);
+    if (n > len)
+        throw new RangeError("getRandom: more elements taken than available");
+    while (n--) {
+        var x = Math.floor(Math.random() * len);
+        result[n] = arr[x in taken ? taken[x] : x];
+        taken[x] = --len in taken ? taken[len] : len;
     }
-]
-
-
+    return result;
+}
 const Home = () => {
+
+
+    const {data:gamesDataFetch} = useGetAllGamesQuery();
+
+    const [games,setGames] = useState<Game[]>();
+
+    useEffect(()=>{
+        if(gamesDataFetch){
+            setGames(getRandom(gamesDataFetch,3));
+        }
+    },[gamesDataFetch])
+
     return (
         <div>
                 <Grid container spacing={3}
@@ -67,13 +69,14 @@ const Home = () => {
                         item xs={10}>
                         <SearchInput/>
                     </Grid>
-                    {GAMES.map(game=>(
-                        <Grid key={game.gameName} item xs={4}>
+
+                    {games?.map(game=>(
+                        <Grid key={game.id} item xs={4}>
                             <GameCard
                                 description={game.description}
-                                      gameName={game.gameName}
+                                      gameName={game.name}
                                       shortGameName={game.shortGameName}
-                                      imgPath={game.imgPath}
+                                      imgPath={game.imageUrl}
                                         gameId = {game.id}/>
                         </Grid>
                     ))}

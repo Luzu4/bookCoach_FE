@@ -17,8 +17,11 @@ export interface UserStateData {
 }
 
 export interface Game {
-    id:number,
-    name:string
+    name:string,
+    shortGameName:string,
+    description:string,
+    imageUrl:string,
+    id:number
 }
 
 export interface Coach {
@@ -45,7 +48,7 @@ export interface User {
     nickName: string;
     password: string;
     user_type: number;
-    details_id: number;
+    userDetails: UserDetails;
 }
 
 export interface UserDetails{
@@ -53,6 +56,8 @@ export interface UserDetails{
     language: string;
     country: string;
     city: string;
+    imageUrl:string;
+    description:string;
     game: Game[];
 }
 

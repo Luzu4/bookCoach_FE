@@ -30,6 +30,10 @@ const images = [
         label: 'Goč, Serbia',
         imgPath:LUZPHOTO,
     },
+    {
+        label: 'Gočss, Serbsssia',
+        imgPath:LUZPHOTO,
+    },
 ];
 
 function CarouselTextAndPhoto() {

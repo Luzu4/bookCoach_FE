@@ -37,6 +37,7 @@ interface formInput {
     email: string;
     password: string;
     confirmPassword: string;
+    nickName: string;
 }
 
 
@@ -61,7 +62,8 @@ const Signup: React.FC = () => {
 
         const reqBody = {
             email: data.email,
-            password: data.password
+            password: data.password,
+            nickName: data.nickName
         };
         if(data.password === data.confirmPassword){
             dispatch(registerUser(reqBody));
@@ -101,6 +103,10 @@ const Signup: React.FC = () => {
                             </Grid>
                             <FormControl sx={{m: 1, width: '25ch'}} variant="outlined">
                                 <TextField {...register("email")} type="email" id="outlined-basic" label="Email"
+                                           variant="outlined"/>
+                            </FormControl>
+                            <FormControl sx={{m: 1, width: '25ch'}} variant="outlined">
+                                <TextField {...register("nickName")} type="text" id="outlined-basic" label="NickName"
                                            variant="outlined"/>
                             </FormControl>
                             <FormControl sx={{m: 1, width: '25ch'}} variant="outlined">

@@ -139,5 +139,6 @@ export const {
     useGetGamesByUserQuery,
     useAddNewLessonsMutation,
     useGetAllUsersQuery,
-    useUpdateUserGamesMutation
+    useUpdateUserGamesMutation,
+    useGetGameByIdQuery
 } = bookCoachApi

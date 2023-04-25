@@ -12,14 +12,13 @@ import { useNavigate } from "react-router-dom";
 
 type CardProps ={
     coachName: string;
-    gameName:string;
+    gameName?:string;
     coachNick:string;
-    description:string;
-    imgPath:string;
+    description?:string;
+    imgPath?:string;
 }
 
 const CoachCard: React.FC<CardProps>= ({coachName,gameName,coachNick,description,imgPath})=> {
-    const loadedImage= require('../images/luz.jpg');
     const navigate = useNavigate();
     const handleClickBook=()=>{
         navigate("/lessons/register");
@@ -27,18 +26,13 @@ const CoachCard: React.FC<CardProps>= ({coachName,gameName,coachNick,description
     return (
         <Card sx={{maxWidth: 345}}>
             <CardHeader
-                avatar={
-                    <Avatar sx={{bgcolor: red[500]}} aria-label="recipe">
-                        R
-                    </Avatar>
-                }
                 title={coachName}
                 subheader={gameName}
             />
             <CardMedia
                 component="img"
                 height="194"
-                image={loadedImage}
+                image={imgPath}
                 alt={coachNick}
             />
             <CardContent>

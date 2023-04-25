@@ -19,7 +19,6 @@ type CardProps ={
 }
 
 const GameCard: React.FC<CardProps>= ({gameId, gameName,shortGameName,description,imgPath})=> {
-    const loadedImage= require('../images/cs2.jpg');
     const navigate = useNavigate();
     return (
         <Card sx={{maxWidth: 345}}>
@@ -29,7 +28,7 @@ const GameCard: React.FC<CardProps>= ({gameId, gameName,shortGameName,descriptio
             <CardMedia
                 component="img"
                 height="194"
-                image={loadedImage}
+                image={imgPath}
                 alt={shortGameName}
             />
             <CardContent>
