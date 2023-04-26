@@ -105,7 +105,7 @@ const LoginModal: React.FC = () => {
 
     return (
         <div>
-            <Button onClick={handleOpen}>Add New Lesson</Button>
+            <Button style={{marginTop:"30px"}}color="error" variant="outlined"  onClick={handleOpen}>Add New Lesson</Button>
             <Modal
                 open={open}
                 onClose={handleClose}

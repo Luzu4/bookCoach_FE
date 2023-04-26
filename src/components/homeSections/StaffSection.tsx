@@ -38,29 +38,23 @@ const StaffSection = () => {
 
 
     return (
-        <div>
-            <Grid container spacing={3}
-                  direction="row"
-                  justifyContent="center"
-                  alignItems="center">
-                <Grid
-                    container
-                    justifyContent="center"
-                    alignItems="center"
-                    direction="row"
-                    item xs={12}>
+        <div  style={{paddingBottom:"10px"}}>
+            <Grid>
+                <Grid style={{color:"#E9B872"}}>
                     <h1>OUR STAFF</h1>
                 </Grid>
-                {staff?.map((member) => (
-                    <Grid key={member.nickName} item xs={4}>
-                        <CoachCard coachNick={member.nickName}
-                                   coachName={member.nickName}
-                                   description={member.userDetails?.description}
-                            // @ts-ignore
-                                   gameName={getRandom(member.userDetails?.game, 1)[0].name}
-                                   imgPath={member.userDetails?.imageUrl}/>
-                    </Grid>
-                ))}
+                <Grid container spacing={3} display={"flex"} justifyContent={"center"}>
+                    {staff?.map((member) => (
+                        <Grid margin={"30px"} item xs={6} sm={4} lg={3} key={member.nickName}>
+                            <CoachCard coachNick={member.nickName}
+                                       coachName={member.nickName}
+                                       description={member.userDetails?.description}
+                                // @ts-ignore
+                                       gameName={getRandom(member.userDetails?.game, 1)[0].name}
+                                       imgPath={member.userDetails?.imageUrl}/>
+                        </Grid>
+                    ))}
+                </Grid>
 
 
             </Grid>

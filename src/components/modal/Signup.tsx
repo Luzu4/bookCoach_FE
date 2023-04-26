@@ -83,7 +83,7 @@ const Signup: React.FC = () => {
 
     return (
         <div>
-            <Button onClick={handleOpen}>Signup</Button>
+            <Button color="inherit"  onClick={handleOpen}>Signup</Button>
             <Modal
                 open={open}
                 onClose={handleClose}

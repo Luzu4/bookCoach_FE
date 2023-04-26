@@ -10,6 +10,7 @@ import {userSelector} from "../../store/userSlice";
 import {Lesson} from "../../interfaces";
 import {useLocalState} from "../../store/useLocalStorage";
 import AddNewLesson from "../modal/AddNewLesson";
+import {Grid} from "@mui/material";
 
 
 const Lessons = () => {
@@ -24,7 +25,7 @@ const Lessons = () => {
 
 
     useEffect(() => {
-        if (lessonsForCoach && userData.role === "COACH") {
+        if (lessonsForCoach && (userData.role === "COACH" || userData.role === "ADMIN")) {
             setTableData(lessonsForCoach);
         }
         if (lessonsForPlayer && userData.role === "PLAYER") {
@@ -52,8 +53,14 @@ const Lessons = () => {
 
     return (
         <div>
+            <Grid container display="flex" alignContent={"center"}>
+                <Grid item xs={12}>
             {userData.role === "COACH" ? <AddNewLesson/> : "" }
+                </Grid>
+                <Grid item xs={12}>
             <LessonsTableList data={tableData} handleDeleteButton={handleDeleteButton} handleUnbookButton={handleUnbookButton}/>
+                </Grid>
+            </Grid>
         </div>
     );
 };

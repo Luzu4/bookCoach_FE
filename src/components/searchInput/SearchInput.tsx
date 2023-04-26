@@ -3,16 +3,17 @@ import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select, {SelectChangeEvent} from '@mui/material/Select';
 import {useGetAllGamesQuery} from "../../store/bookCoachApi";
 import {Game} from "../../interfaces";
 import {useEffect, useState} from "react";
 import Button from "@mui/material/Button";
-import {Link, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
+import {Stack} from "@mui/material";
 
 export default function BasicSelect() {
     const [game, setGame] = React.useState('');
-    const {data:allGamesData} = useGetAllGamesQuery();
+    const {data: allGamesData} = useGetAllGamesQuery();
     const [games, setGames] = useState<Game[]>([]);
 
     const navigate = useNavigate();
@@ -21,39 +22,42 @@ export default function BasicSelect() {
         setGame(event.target.value as string);
     };
 
-    const handleFindCoachClick = ()=>{
-        if(game){
-            navigate("/coaches/game/"+game)
+    const handleFindCoachClick = () => {
+        if (game) {
+            navigate("/coaches/game/" + game)
         }
 
     }
 
-    useEffect(()=>{
-        if(allGamesData){
+    useEffect(() => {
+        if (allGamesData) {
             setGames(allGamesData);
         }
-    },[allGamesData])
+    }, [allGamesData])
     return (
         <>
-        <Box sx={{ minWidth: 120 }}>
-            <FormControl fullWidth style={{background: "#E9B872"}}>
-                <InputLabel id="demo-simple-select-label">Game</InputLabel>
-                <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={game}
-                    label="Age"
-                    onChange={handleChange}
-                >
+            <Box marginBottom={"5rem"}>
+                <Stack direction="column" justifyContent={"center"} alignItems={"center"}>
+                    <FormControl style={{marginTop: "30px", background: "#E9B872", width: "25%"}}>
+                        <InputLabel id="demo-simple-select-label">Game</InputLabel>
+                        <Select
+                            style={{backgroundColor: "#E9B872"}}
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={game}
+                            label="Age"
+                            onChange={handleChange}>
+                            {games.map(game => (
+                                <MenuItem style={{backgroundColor: "#E9B872"}} key={game.id}
+                                          value={game.id}>{game.name}</MenuItem>
+                            ))}
 
-                    {games.map(game=>(
-                        <MenuItem key={game.id} value={game.id}>{game.name}</MenuItem>
-                    ))}
-
-                </Select>
-            </FormControl>
-            <Button onClick={handleFindCoachClick}>Find Coach!</Button>
-        </Box>
+                        </Select>
+                    </FormControl>
+                    <Button style={{margin: "30px"}} variant="outlined" color="error" onClick={handleFindCoachClick}>Find
+                        Coach!</Button>
+                </Stack>
+            </Box>
         </>
     );
 }

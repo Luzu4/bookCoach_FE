@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useGetAllCoachesByGameIdQuery, useGetGameByIdQuery} from "../../store/bookCoachApi";
-import {Coach, UserDetails} from "../../interfaces";
+import {UserDetails} from "../../interfaces";
 import { useParams } from 'react-router-dom'
 import {Grid} from "@mui/material";
 import CoachCard from "../card/CoachCard";
@@ -25,18 +25,16 @@ const Coaches = () => {
         }
         if(id){
             setGameId(id);
-
         }
     },[coachesFetch,gameFetch,allCoaches,id])
 
     return (
-        <div style={{color:"white"}}>
-            <Grid container spacing={3}
-                  direction="row"
-                  justifyContent="center"
-                  alignItems="center">
-            {allCoaches.map((coach)=>(
-                <Grid key={coach.nickName} item xs={4}>
+        <div style={{color:"#E9B872", paddingBottom:"150px"}}>
+            {gameFetch ? <h1>{gameFetch.name}</h1> : "Loading..."}
+            <Grid container spacing={3} display={"flex"} justifyContent={"center"}>
+
+                {allCoaches.map((coach)=>(
+                <Grid margin={"30px"} item xs={6} sm={4} lg={3} key={coach.nickName}>
                     <CoachCard coachNick={coach.nickName}
                                coachName={coach.nickName}
                                description={coach.userDetails?.description}
@@ -44,7 +42,6 @@ const Coaches = () => {
                                imgPath={coach.userDetails?.imageUrl}/>
                 </Grid>
             ))}</Grid>
-
         </div>
     );
 };

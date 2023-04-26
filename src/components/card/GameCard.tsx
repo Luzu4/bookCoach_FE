@@ -10,18 +10,18 @@ import Typography from '@mui/material/Typography';
 import {useNavigate} from "react-router-dom";
 
 
-type CardProps ={
+type CardProps = {
     gameName: string;
-    shortGameName:string;
-    description:string;
-    imgPath:string;
-    gameId:number;
+    shortGameName: string;
+    description: string;
+    imgPath: string;
+    gameId: number;
 }
 
-const GameCard: React.FC<CardProps>= ({gameId, gameName,shortGameName,description,imgPath})=> {
+const GameCard: React.FC<CardProps> = ({gameId, gameName, shortGameName, description, imgPath}) => {
     const navigate = useNavigate();
     return (
-        <Card sx={{maxWidth: 345}}>
+        <Card style={{backgroundColor:"#A63D40", color:"#E9B872"}}>
             <CardHeader
                 title={gameName}
             />
@@ -32,16 +32,16 @@ const GameCard: React.FC<CardProps>= ({gameId, gameName,shortGameName,descriptio
                 alt={shortGameName}
             />
             <CardContent>
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="body1" color="#E9B872">
                     {description}
                 </Typography>
             </CardContent>
 
-                <CardActions disableSpacing>
-                    <Button onClick={()=>navigate("/coaches/game/"+gameId)} variant="outlined" color="error">
-                        Search Coach
-                    </Button>
-                </CardActions>
+            <CardActions style={{display:"flex", justifyContent: "center"}}>
+                <Button onClick={() => navigate("/coaches/game/" + gameId)} variant="outlined" color="inherit">
+                    Search Coach
+                </Button>
+            </CardActions>
 
         </Card>
     );

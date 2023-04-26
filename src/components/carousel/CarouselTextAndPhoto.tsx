@@ -45,16 +45,18 @@ function CarouselTextAndPhoto() {
     };
 
     return (
-        <Box sx={{ maxWidth: 400, flexGrow: 1 }}>
+        <Box  sx={{ maxWidth: 400, flexGrow: 1 }}>
             <Paper
                 square
-                elevation={0}
+                variant="elevation"
+                elevation={24}
                 sx={{
                     display: 'flex',
                     alignItems: 'center',
                     height: 50,
                     pl: 2,
-                    bgcolor: 'background.default',
+                    bgcolor: '#A63D40',
+                    color:"#E9B872",
                 }}
             >
                 {happyStudents ? <Typography>{happyStudents[activeStep].name} - {happyStudents[activeStep]?.description}</Typography>: ""}
@@ -89,11 +91,13 @@ function CarouselTextAndPhoto() {
             </AutoPlaySwipeableViews>
 
             <MobileStepper
+                style={{backgroundColor:"#A63D40"}}
                 steps={maxSteps}
                 position="static"
                 activeStep={activeStep}
                 nextButton={
                     <Button
+                        color="warning"
                         size="small"
                         onClick={handleNext}
                         disabled={activeStep === maxSteps - 1}
@@ -107,7 +111,7 @@ function CarouselTextAndPhoto() {
                     </Button>
                 }
                 backButton={
-                    <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
+                    <Button color="warning" size="small" onClick={handleBack} disabled={activeStep === 0}>
                         {theme.direction === 'rtl' ? (
                             <KeyboardArrowRight />
                         ) : (

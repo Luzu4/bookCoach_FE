@@ -127,7 +127,7 @@ const EditUserData: React.FC = () => {
 
     return (
         <div>
-            <Button onClick={handleOpen}>Settings</Button>
+            <Button color="inherit" onClick={handleOpen}>Settings</Button>
             <Modal
                 open={open}
                 onClose={handleClose}

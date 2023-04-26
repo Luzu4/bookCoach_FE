@@ -37,9 +37,9 @@ const GamesTableList: React.FC<TableProps> = ({data, handleDeleteButton,refetch}
         },
     ];
     return (
-        <div style={{height: 400, minWidth: 300, width: 800,}}>
+        <div style={{height: 400, minWidth: 300, padding:"40px"}}>
             <DataGrid
-                style={{color: "#E9B872"}}
+                style={{color: "#E9B872", borderColor:"#A63D40"}}
                 rows={data}
                 columns={columns}
             />

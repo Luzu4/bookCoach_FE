@@ -24,7 +24,7 @@ const CoachCard: React.FC<CardProps>= ({coachName,gameName,coachNick,description
         navigate("/lessons/register");
     }
     return (
-        <Card sx={{maxWidth: 345}}>
+        <Card style={{backgroundColor:"#A63D40", color:"#E9B872"}}>
             <CardHeader
                 title={coachName}
                 subheader={gameName}
@@ -36,13 +36,13 @@ const CoachCard: React.FC<CardProps>= ({coachName,gameName,coachNick,description
                 alt={coachNick}
             />
             <CardContent>
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="body1" color="#E9B872">
                     {description}
                 </Typography>
             </CardContent>
 
-                <CardActions disableSpacing>
-                    <Button variant="outlined" color="error" onClick={handleClickBook}>
+                <CardActions style={{display:"flex", justifyContent:"center"}}>
+                    <Button variant="outlined" color="inherit" onClick={handleClickBook}>
                         Book
                     </Button>
                 </CardActions>

@@ -75,7 +75,7 @@ const LoginModal: React.FC = () => {
 
     return (
         <div>
-            <Button onClick={handleOpen}>Login</Button>
+            <Button color="inherit" onClick={handleOpen}>Login</Button>
             <Modal
                 open={open}
                 onClose={handleClose}

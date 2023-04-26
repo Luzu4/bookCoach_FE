@@ -70,7 +70,7 @@ const AddNewGame: React.FC<props>= ({refetch}) => {
     }
     return (
         <div>
-            <Button onClick={handleOpen}>Add New Game</Button>
+            <Button color="error" variant="outlined" onClick={handleOpen}>Add New Game</Button>
             <Modal
                 open={open}
                 onClose={handleClose}

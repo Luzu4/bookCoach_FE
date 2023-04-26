@@ -5,6 +5,7 @@ import {
 } from "../../store/bookCoachApi";
 import {Game} from "../../interfaces";
 import AddNewGame from "../modal/AddNewGame";
+import {Grid} from "@mui/material";
 
 
 const Games = () => {
@@ -26,8 +27,16 @@ const Games = () => {
 
     return (
         <div>
-            <AddNewGame refetch={refetch}/>
-            <GamesTableList data={tableData} handleDeleteButton={handleDeleteButton} refetch={refetch}/>
+            <Grid container display="flex" alignContent={"center"}>
+                <Grid item xs={12}>
+                    <GamesTableList data={tableData} handleDeleteButton={handleDeleteButton} refetch={refetch}/>
+                </Grid>
+                <Grid item xs={12}>
+                    <AddNewGame refetch={refetch}/>
+                </Grid>
+            </Grid>
+
+
         </div>
     );
 };
