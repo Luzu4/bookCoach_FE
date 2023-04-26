@@ -48,6 +48,7 @@ interface formInput {
 
 
 const EditUserData: React.FC = () => {
+    const userData = useSelector(userSelector);
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -65,7 +66,7 @@ const EditUserData: React.FC = () => {
     const {register, handleSubmit} = useForm<formInput>();
 
     const [user, setUser] = React.useState<formInput>({
-        email: "a",
+        email: "",
         password: "",
         confirmPassword: "",
         nickName: "",
@@ -75,23 +76,20 @@ const EditUserData: React.FC = () => {
         description: "",
         imageUrl: "",
     });
-
-    const userData = useSelector(userSelector);
     const {data: userDataFetch} = useGetUserByEmailQuery(userData.email);
 
     useEffect(() => {
-
-        if(userDataFetch){
+        if (userDataFetch) {
             setUser({
                 email: userDataFetch.email,
                 password: "",
                 confirmPassword: "",
                 nickName: userDataFetch.nickName,
                 city: userDataFetch.userDetails.city,
-                country:userDataFetch.userDetails.country,
-                language:userDataFetch.userDetails.language,
-                description:userDataFetch.userDetails.description,
-                imageUrl:userDataFetch.userDetails.imageUrl
+                country: userDataFetch.userDetails.country,
+                language: userDataFetch.userDetails.language,
+                description: userDataFetch.userDetails.description,
+                imageUrl: userDataFetch.userDetails.imageUrl
             })
         }
 
@@ -148,32 +146,46 @@ const EditUserData: React.FC = () => {
                                 </Typography>
                             </Grid>
                             <FormControl sx={{m: 1, width: '25ch'}} variant="outlined">
-                                <TextField {...register("email")} value={user.email} onChange={(event)=>setUser({...user,email:event.target.value})} type="email" id="outlined-basic" label="Email"
+                                <TextField {...register("email")} value={user.email}
+                                           onChange={(event) => setUser({...user, email: event.target.value})}
+                                           type="email"  label="Email"
                                            variant="outlined"/>
                             </FormControl>
                             <FormControl sx={{m: 1, width: '25ch'}} variant="outlined">
-                                <TextField {...register("nickName")} value={user.nickName} onChange={(event)=>setUser({...user,nickName:event.target.value})} type="text" id="outlined-basic" label="NickName"
+                                <TextField {...register("nickName")} value={user.nickName}
+                                           onChange={(event) => setUser({...user, nickName: event.target.value})}
+                                           type="text"  label="NickName"
                                            variant="outlined"/>
                             </FormControl>
                             <FormControl sx={{m: 1, width: '25ch'}} variant="outlined">
-                                <TextField {...register("city")} value={user.city} onChange={(event)=>setUser({...user,city:event.target.value})}  type="text" id="outlined-basic" label="City"
+                                <TextField {...register("city")} value={user.city}
+                                           onChange={(event) => setUser({...user, city: event.target.value})}
+                                           type="text"  label="City"
                                            variant="outlined"/>
                             </FormControl>
                             <FormControl sx={{m: 1, width: '25ch'}} variant="outlined">
-                                <TextField {...register("country")} value={user.country} onChange={(event)=>setUser({...user,country:event.target.value})}  type="text" id="outlined-basic" label="Country"
+                                <TextField {...register("country")} value={user.country}
+                                           onChange={(event) => setUser({...user, country: event.target.value})}
+                                           type="text"  label="Country"
                                            variant="outlined"/>
                             </FormControl>
                             <FormControl sx={{m: 1, width: '25ch'}} variant="outlined">
-                                <TextField {...register("language")} value={user.language} onChange={(event)=>setUser({...user,language:event.target.value})}  type="text" id="outlined-basic" label="Language"
+                                <TextField {...register("language")} value={user.language}
+                                           onChange={(event) => setUser({...user, language: event.target.value})}
+                                           type="text"  label="Language"
                                            variant="outlined"/>
                             </FormControl>
                             <FormControl sx={{m: 1, width: '25ch'}} variant="outlined">
-                                <TextField {...register("description")} value={user.description} onChange={(event)=>setUser({...user,description:event.target.value})}  type="text" id="outlined-basic"
+                                <TextField {...register("description")} value={user.description}
+                                           onChange={(event) => setUser({...user, description: event.target.value})}
+                                           type="text"
                                            label="Description"
                                            variant="outlined"/>
                             </FormControl>
                             <FormControl sx={{m: 1, width: '25ch'}} variant="outlined">
-                                <TextField {...register("imageUrl")} value={user.imageUrl} onChange={(event)=>setUser({...user,imageUrl:event.target.value})}  type="text" id="outlined-basic" label="ImageUrl"
+                                <TextField {...register("imageUrl")} value={user.imageUrl}
+                                           onChange={(event) => setUser({...user, imageUrl: event.target.value})}
+                                           type="text"  label="ImageUrl"
                                            variant="outlined"/>
                             </FormControl>
 
@@ -199,7 +211,7 @@ const EditUserData: React.FC = () => {
                                 />
                             </FormControl>
                             <FormControl sx={{m: 1, width: '25ch'}} variant="outlined">
-                                <TextField {...register("confirmPassword")} type="password" id="outlined-basic"
+                                <TextField {...register("confirmPassword")} type="password"
                                            label="ConfirmPassword"
                                            variant="outlined"/>
                             </FormControl>

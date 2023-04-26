@@ -33,9 +33,10 @@ type props={
     userId:string;
     userGames:Game[];
     userRole:string;
+    refetch:any;
 }
 
-const EditUser: React.FC<props> = ({userId,userGames,userRole}) => {
+const EditUser: React.FC<props> = ({userId,userGames,userRole,refetch}) => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -73,12 +74,8 @@ const EditUser: React.FC<props> = ({userId,userGames,userRole}) => {
                 "userId":userId
             }
             updateUserGamesAndRole(userDataToSave);
+            refetch();
         }
-
-        console.log(userId);
-        console.log(gamesId);
-        console.log(role);
-
     }
     const handleChangeRole = (event: SelectChangeEvent)=>{
         setRole(event.target.value);

@@ -13,7 +13,6 @@ import Users from "./components/pages/Users";
 import jwt_decode from "jwt-decode";
 import {Role, TokenData} from "./interfaces";
 import PrivateRouteRole from "./store/PrivateRouteRole";
-import EditUserData from "./components/modal/EditUserData";
 import Games from "./components/pages/Games";
 
 function App() {
@@ -26,7 +25,7 @@ function App() {
         if(jwt){
             const decodedToken: TokenData = jwt_decode(jwt);
             if(Date.now() >= decodedToken.exp*1000){
-                localStorage.setItem("jwt", "\"\"");
+                localStorage.removeItem("jwt");
                 setJwt("");
                 window.location.href = "/";
             }else{
@@ -34,6 +33,7 @@ function App() {
             }
         }
     },[])
+
     return (
         <div className="App">
             <Header/>

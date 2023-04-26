@@ -4,7 +4,6 @@ import {Grid} from "@mui/material";
 import "./VisitFormRegister.css";
 import {useForm, SubmitHandler} from "react-hook-form";
 import {useSelector} from "react-redux";
-import {coachesSelector} from "../../store/coachesSlice"
 import SelectDropDown from "../selectDropDown/SelectDropDown";
 import {
     useAddPlayerToLessonMutation, useGetAllByTypeQuery,
@@ -26,13 +25,10 @@ type Game = {
     id: number;
     name: string;
 }
-type Coach = {
-    id: number;
-    nickName: string;
-}
 
 type Lesson =
     {
+        id:number;
 
         date: string;
         time: string;
@@ -46,10 +42,10 @@ type Lesson =
 
 const VisitFormRegister = () => {
     const [coaches, setCoaches] = useState<User[]>([]);
-    const{data:allCoaches} = useGetAllByTypeQuery("coach");
+    const {data: allCoaches} = useGetAllByTypeQuery("coach");
     const userData = useSelector(userSelector);
     useEffect(() => {
-        if(allCoaches){
+        if (allCoaches) {
             setCoaches(allCoaches);
         }
 
@@ -103,9 +99,9 @@ const VisitFormRegister = () => {
     }
 
     const [email, setEmail] = useState("");
-    useEffect(()=>{
+    useEffect(() => {
         setEmail(userData.email)
-    },[])
+    }, [])
     const [addPlayerToLesson] = useAddPlayerToLessonMutation()
     const handleSendButtonClick = (id: string | number) => {
         if (lessonsData && email.length > 3) {
@@ -115,10 +111,7 @@ const VisitFormRegister = () => {
             }
             addPlayerToLesson(lessonDataToSave).unwrap()
                 .then(() => {
-                })
-                .then((error) => {
-                    console.log("HEJ")
-                    console.log(error)
+                    setLessonsDataTable(lessonsDataTable.filter(lesson=> lesson.id !==id))
                 })
         }
     }

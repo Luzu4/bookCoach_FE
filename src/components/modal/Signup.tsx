@@ -101,12 +101,12 @@ const Signup: React.FC = () => {
                                     Signup
                                 </Typography>
                             </Grid>
-                            <FormControl sx={{m: 1, width: '25ch'}} variant="outlined">
-                                <TextField {...register("email")} type="email" id="outlined-basic" label="Email"
+                            <FormControl  sx={{m: 1, width: '25ch'}} variant="outlined">
+                                <TextField {...register("email")} type="email" label="Email"
                                            variant="outlined"/>
                             </FormControl>
                             <FormControl sx={{m: 1, width: '25ch'}} variant="outlined">
-                                <TextField {...register("nickName")} type="text" id="outlined-basic" label="NickName"
+                                <TextField {...register("nickName")} type="text"  label="NickName"
                                            variant="outlined"/>
                             </FormControl>
                             <FormControl sx={{m: 1, width: '25ch'}} variant="outlined">
@@ -131,7 +131,7 @@ const Signup: React.FC = () => {
                                 />
                             </FormControl>
                             <FormControl sx={{m: 1, width: '25ch'}} variant="outlined">
-                                <TextField {...register("confirmPassword")} type="password" id="outlined-basic" label="ConfirmPassword"
+                                <TextField {...register("confirmPassword")} type="password" label="ConfirmPassword"
                                            variant="outlined"/>
                             </FormControl>
                             <Stack direction="row" spacing={2}>

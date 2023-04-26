@@ -26,6 +26,7 @@ import {
     useUpdateGameDataMutation,
     useUpdateUserDataMutation
 } from "../../store/bookCoachApi";
+import {Game} from "../../interfaces";
 
 const boxContainerStyle = {
     position: 'absolute' as 'absolute',
@@ -48,9 +49,10 @@ interface formInput {
 
 type props={
     gameId:number,
+    refetch:any,
 }
 
-const EditGame: React.FC<props> = ({gameId}) => {
+const EditGame: React.FC<props> = ({gameId,refetch}) => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -96,7 +98,7 @@ const EditGame: React.FC<props> = ({gameId}) => {
         };
 
         updateGameData(reqBody);
-
+        refetch();
 
     }
     return (

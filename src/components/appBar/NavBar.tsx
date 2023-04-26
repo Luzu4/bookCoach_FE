@@ -18,7 +18,7 @@ export default function NavBar() {
     const userData = useSelector(userSelector);
     const [jwt, setJwt] = useLocalState("", "jwt");
     const handleLogoutClick = () => {
-        localStorage.setItem("jwt", "\"\"");
+        localStorage.removeItem("jwt");
         setJwt("");
         window.location.href = "/";
     }

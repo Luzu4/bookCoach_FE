@@ -1,9 +1,7 @@
 import {DataGrid, GridColDef} from "@mui/x-data-grid";
 import Button from '@mui/material/Button';
 import React from "react";
-import {Game, Lesson} from "../../interfaces";
-import {useSelector} from "react-redux";
-import {userSelector} from "../../store/userSlice";
+import {Game} from "../../interfaces";
 import EditGame from "../modal/EditGame";
 import {Stack} from "@mui/material";
 
@@ -11,10 +9,12 @@ import {Stack} from "@mui/material";
 type TableProps = {
     data: Game[],
     handleDeleteButton: any,
-    handleEditButton: any,
+    refetch:any
+
+
 }
 
-const GamesTableList: React.FC<TableProps> = ({data, handleDeleteButton, handleEditButton}) => {
+const GamesTableList: React.FC<TableProps> = ({data, handleDeleteButton,refetch}) => {
 
     const columns: GridColDef[] = [
         {field: 'id', headerName: 'ID', flex: 0.1},
@@ -32,7 +32,7 @@ const GamesTableList: React.FC<TableProps> = ({data, handleDeleteButton, handleE
             renderCell: (params) => {
                 return <div><Stack direction="row" spacing={2}><Button onClick={() => handleDeleteButton(params.id)}
                                     color="secondary">DELETE</Button>
-                    <EditGame gameId={+params.id}/></Stack></div>;
+                    <EditGame gameId={+params.id} refetch={refetch} /></Stack></div>;
             },
         },
     ];

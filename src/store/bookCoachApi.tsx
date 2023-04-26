@@ -1,16 +1,9 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
 import {Game, Lesson, User, UserForTable} from "../interfaces";
 
-
-
-
-
-const authToken = localStorage.getItem('jwt');
-
 const prepareHeaders = (headers: Headers) => {
     // @ts-ignore
-    headers.set('Authorization', `Bearer ${JSON.parse(authToken)}`);
-
+    headers.set('Authorization', `Bearer ${JSON.parse(localStorage.getItem('jwt'))}`);
 
 }
 

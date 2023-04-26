@@ -34,7 +34,11 @@ interface formInput {
     imageUrl: string;
 }
 
-const AddNewGame: React.FC= () => {
+type props ={
+    refetch:any
+}
+
+const AddNewGame: React.FC<props>= ({refetch}) => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -60,6 +64,7 @@ const AddNewGame: React.FC= () => {
         };
 
         addNewGameData(reqBody);
+        refetch();
 
 
     }
