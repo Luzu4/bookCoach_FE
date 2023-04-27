@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import GamesTableList from "../tables/GamesTableList";
 import {
-    useGetAllGamesQuery,
+    useGetAllGamesQuery, useRemoveGameByIdMutation,
 } from "../../store/bookCoachApi";
 import {Game} from "../../interfaces";
 import AddNewGame from "../modal/AddNewGame";
@@ -19,9 +19,9 @@ const Games = () => {
             }
     }, [allGamesDataFetch])
 
-    // const [deleteLesson, response] = useRemoveLessonByIdMutation();
+    const [deleteGame, response] = useRemoveGameByIdMutation();
     const handleDeleteButton = (gameId: any)=>{
-        console.log("REMOVE GAME: " + gameId);
+        deleteGame(gameId);
     }
 
 

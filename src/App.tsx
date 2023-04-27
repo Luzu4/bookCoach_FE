@@ -43,9 +43,15 @@ function App() {
                 <Route path={"/lessons/register"} element={<VisitFormRegister/>}/>
                 <Route path={"/user/coach/lessons"} element={
 
-                        <PrivateRouteRole roles={[Role.COACH, Role.ADMIN]}>
+                        <PrivateRouteRole roles={[Role.COACH]}>
                     <Lessons/>
                         </PrivateRouteRole>
+                }/>
+                <Route path={"/user/admin/lessons"} element={
+
+                    <PrivateRouteRole roles={[Role.ADMIN]}>
+                        <Lessons/>
+                    </PrivateRouteRole>
                 }/>
                 <Route path={"/user/player/lessons"} element={
                         <PrivateRouteRole roles={[Role.PLAYER]}>

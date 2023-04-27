@@ -24,12 +24,6 @@ export interface Game {
     id:number
 }
 
-export interface Coach {
-    id:number,
-    nickName:string,
-    email:string,
-}
-
 export interface Lesson {
         id: number;
         date: string;
@@ -37,10 +31,18 @@ export interface Lesson {
         playerNote: string;
         playerId: number;
         playerEmail: string;
-        game: {};
-        user: {};
+        game: Game;
+        user: User;
 
     }
+    // export interface LessonDataForTable {
+    //     id:number;
+    //     date:string;
+    //     time:string;
+    //     user:User;
+    //     game:Game;
+    //     playerEmail: string;
+    // }
 
 export interface User {
     id: number;
@@ -68,6 +70,8 @@ export interface UserForTable {
     role: string;
     userDetails: UserDetails[];
 }
+
+
 
 export enum Role {
     ADMIN= "ADMIN",

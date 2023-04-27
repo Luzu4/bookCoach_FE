@@ -13,29 +13,30 @@ const defaultUserState: UserStateData = {email: "", role: "", isAuthenticated: f
 export const authenticateUser = createAsyncThunk(
     "user/authenticate",
     async (payload: AuthenticatePayload) => {
-        const response = await fetch("/api/v1/auth/authenticate", {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            method: "post",
-            body: JSON.stringify(payload),
-        });
+        try{
+            const response = await fetch("/api/v1/auth/authenticate", {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                method: "post",
+                body: JSON.stringify(payload),
+            });
 
-        if (!response.ok) {
-            throw new Error("Invalid username or password");
+            const data: ResponseAuthData = await response.json();
+            const decodedToken: TokenData = jwt_decode(data.token);
+
+            const userData: UserStateData = {
+                email: decodedToken.sub,
+                role: decodedToken.role.authority,
+                isAuthenticated: true
+            };
+
+            localStorage.setItem("jwt", "\"" + data.token + "\"");
+            return userData;
+        }catch(e){
+            throw e;
         }
 
-        const data: ResponseAuthData = await response.json();
-        const decodedToken: TokenData = jwt_decode(data.token);
-
-        const userData: UserStateData = {
-            email: decodedToken.sub,
-            role: decodedToken.role.authority,
-            isAuthenticated: true
-        };
-
-        localStorage.setItem("jwt", "\"" + data.token + "\"");
-        return userData;
     }
 );
 
@@ -102,12 +103,18 @@ const userSlice = createSlice({
         },
     },
     extraReducers: builder => {
+        //@ts-ignore
         builder.addCase(authenticateUser.fulfilled, (state, action) => {
             return action.payload;
         });
         builder.addCase(checkToken.fulfilled, (state, action) => {
             return action.payload;
         });
+        builder.addCase(authenticateUser.rejected, (state, action)=>{
+            console.log("ERRRROR")
+            console.log(action.error);
+            return
+        })
     }
 });
 

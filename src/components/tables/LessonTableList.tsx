@@ -17,29 +17,35 @@ const LessonsTableList: React.FC<TableProps> = ({data, handleDeleteButton, handl
 
     const userData = useSelector(userSelector);
 
-
     const columns: GridColDef[] = [
-        {field: 'id', headerName: 'ID', width: 70, flex: 0.1},
+        {field: 'id', headerName: 'ID', width: 10},
         {field: 'date', headerName: 'Date', width: 200, flex: 0.1},
         {field: 'time', headerName: 'Time', width: 200, flex: 0.1},
-        {field: 'user', headerName: 'Coach Nick', width: 200, flex: 0.1},
-        {field: 'game', headerName: 'Game', width: 200, flex: 0.1},
+        {field: 'user', headerName: 'Coach Nick', width: 200, flex: 0.1,
+        renderCell: (params)=>{
+        return <div>{params.row.user.nickName}</div>
+    }},
+        {field: 'game', headerName: 'Game', width: 200, flex: 0.1,
+        renderCell:(params)=>{
+            return <div>{params.row.game !== null ? <div>{params.row.game.name}</div>: <div>GAME DELETED</div>}</div>;
+        }},
         {field: 'playerEmail', headerName: 'playerEmail', width: 130, flex: 0.1},
         {
             field: 'action',
             filterable: false,
+            width:150,
             flex:0.3,
             disableColumnMenu: true,
             headerName: 'Actions',
             sortable: false,
             renderCell: (params) => {
-                return <div>{(userData.role === "COACH" || userData.role === "ADMIN") ?
+                return <div>{(Date.now() < Date.parse(params.row.date)) ? <div>{(userData.role === "COACH" || userData.role === "ADMIN") ?
                     <Stack direction="row" spacing={2}><Button onClick={() => handleDeleteButton(params.id)}
                                                                color="secondary">DELETE</Button> <Button
                         onClick={() => handleUnbookButton(params.id)}
                         color="secondary">UNBOOK</Button></Stack> :
                         <Button onClick={() => handleUnbookButton(params.id)}
-                                color="secondary">UNBOOK</Button>}</div>
+                                color="secondary">UNBOOK</Button>}</div>: ""}</div>
 
                     ;
                 },

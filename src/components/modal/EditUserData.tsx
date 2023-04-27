@@ -110,20 +110,13 @@ const EditUserData: React.FC = () => {
             imageUrl: data.imageUrl
         };
         if (data.password === data.confirmPassword) {
-            updateUserData(reqBody);
+            updateUserData(reqBody)
         } else {
             alert("passwords must be identical")
         }
 
 
     }
-    const userState = useSelector(userSelector);
-    useEffect(() => {
-        if (userState.email) {
-            // window.location.href="/";
-        }
-    }, [userState, dispatch])
-
 
     return (
         <div>
@@ -148,31 +141,31 @@ const EditUserData: React.FC = () => {
                             <FormControl sx={{m: 1, width: '25ch'}} variant="outlined">
                                 <TextField {...register("email")} value={user.email}
                                            onChange={(event) => setUser({...user, email: event.target.value})}
-                                           type="email"  label="Email"
+                                           type="email" label="Email"
                                            variant="outlined"/>
                             </FormControl>
                             <FormControl sx={{m: 1, width: '25ch'}} variant="outlined">
                                 <TextField {...register("nickName")} value={user.nickName}
                                            onChange={(event) => setUser({...user, nickName: event.target.value})}
-                                           type="text"  label="NickName"
+                                           type="text" label="NickName"
                                            variant="outlined"/>
                             </FormControl>
                             <FormControl sx={{m: 1, width: '25ch'}} variant="outlined">
                                 <TextField {...register("city")} value={user.city}
                                            onChange={(event) => setUser({...user, city: event.target.value})}
-                                           type="text"  label="City"
+                                           type="text" label="City"
                                            variant="outlined"/>
                             </FormControl>
                             <FormControl sx={{m: 1, width: '25ch'}} variant="outlined">
                                 <TextField {...register("country")} value={user.country}
                                            onChange={(event) => setUser({...user, country: event.target.value})}
-                                           type="text"  label="Country"
+                                           type="text" label="Country"
                                            variant="outlined"/>
                             </FormControl>
                             <FormControl sx={{m: 1, width: '25ch'}} variant="outlined">
                                 <TextField {...register("language")} value={user.language}
                                            onChange={(event) => setUser({...user, language: event.target.value})}
-                                           type="text"  label="Language"
+                                           type="text" label="Language"
                                            variant="outlined"/>
                             </FormControl>
                             <FormControl sx={{m: 1, width: '25ch'}} variant="outlined">
@@ -185,7 +178,7 @@ const EditUserData: React.FC = () => {
                             <FormControl sx={{m: 1, width: '25ch'}} variant="outlined">
                                 <TextField {...register("imageUrl")} value={user.imageUrl}
                                            onChange={(event) => setUser({...user, imageUrl: event.target.value})}
-                                           type="text"  label="ImageUrl"
+                                           type="text" label="ImageUrl"
                                            variant="outlined"/>
                             </FormControl>
 

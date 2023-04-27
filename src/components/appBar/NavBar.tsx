@@ -47,8 +47,12 @@ export default function NavBar() {
                                     Lessons</Button>
                                 : ""}
                             {userData.role === "ADMIN" ?
+                                <Button color="inherit" onClick={() => navigate("/user/admin/lessons")}>My
+                                    Lessons</Button>
+                                : ""}
+                            {userData.role === "ADMIN" ?
                                 <Button color="inherit" onClick={() => navigate("/games")}>Games</Button> : ""}
-                            {userData.role === "COACH" || userData.role === "ADMIN" ?
+                            {userData.role === "COACH" ?
                                 <Button color="inherit" onClick={() => navigate("/user/coach/lessons")}>My
                                     Lessons</Button> : ""}
                         </div> : ""}

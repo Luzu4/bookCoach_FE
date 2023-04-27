@@ -62,16 +62,10 @@ const LoginModal: React.FC = () => {
             email: data.email,
             password: data.password
         };
-        dispatch(authenticateUser(reqBody));
-
+        dispatch(authenticateUser(reqBody)).then(response=>{
+            console.log(response);
+        });
     }
-    const userState = useSelector(userSelector);
-    useEffect(()=>{
-        if(userState.email){
-            // window.location.href="/";
-        }
-    },[userState,dispatch])
-
 
     return (
         <div>

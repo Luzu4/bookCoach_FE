@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import LessonsTableList from "../tables/LessonTableList";
 import {
+    useGetAllLessonsQuery,
     useGetLessonsByCoachIdQuery,
     useGetLessonsByPlayerIdQuery,
     useRemoveLessonByIdMutation, useRemovePlayerFromLessonMutation
@@ -18,36 +19,39 @@ const Lessons = () => {
     const [jwt, setJwt] = useLocalState("", "jwt")
     const userData = useSelector(userSelector);
 
-    const {data: lessonsForPlayer} = useGetLessonsByPlayerIdQuery(jwt);
-    const {data: lessonsForCoach} = useGetLessonsByCoachIdQuery(jwt);
+    const {data: lessonsForPlayer, refetch:refetchPlayer} = useGetLessonsByPlayerIdQuery();
+    const {data: lessonsForCoach, refetch:refetchCoach} = useGetLessonsByCoachIdQuery();
+    const {data: lessonsForAdmin, refetch:refetchAdmin} = useGetAllLessonsQuery();
 
     const [tableData, setTableData] = useState<Lesson[]>([]);
 
 
     useEffect(() => {
-        if (lessonsForCoach && (userData.role === "COACH" || userData.role === "ADMIN")) {
+        if (lessonsForCoach && (userData.role === "COACH")) {
             setTableData(lessonsForCoach);
         }
         if (lessonsForPlayer && userData.role === "PLAYER") {
             setTableData(lessonsForPlayer);
         }
-    }, [lessonsForCoach, lessonsForPlayer])
+        if(lessonsForAdmin && (userData.role ==="ADMIN")){
+            setTableData(lessonsForAdmin);
+        }
+    }, [lessonsForCoach, lessonsForPlayer,lessonsForAdmin])
     const [deleteLesson, response] = useRemoveLessonByIdMutation();
     const handleDeleteButton = (lessonId: any)=>{
         deleteLesson(lessonId);
-        const index:number = tableData.findIndex(lesson => lesson.id === lessonId);
-        const tableDataCopy = [...tableData];
-        tableDataCopy.splice( index,1);
-        setTableData(tableDataCopy);
+        refetchCoach();
+        refetchAdmin();
+
     }
 
     const [deletePlayerFromLesson, responsex] = useRemovePlayerFromLessonMutation();
     const handleUnbookButton = (lessonId: any)=>{
         deletePlayerFromLesson(lessonId);
-        const index:number = tableData.findIndex(lesson => lesson.id === lessonId);
-        const tableDataCopy = [...tableData];
-        tableDataCopy.splice( index,1);
-        setTableData(tableDataCopy);
+        refetchPlayer();
+        refetchCoach();
+        refetchAdmin();
+
     }
 
 
@@ -55,7 +59,7 @@ const Lessons = () => {
         <div>
             <Grid container display="flex" alignContent={"center"}>
                 <Grid item xs={12}>
-            {userData.role === "COACH" ? <AddNewLesson/> : "" }
+            {userData.role === "COACH" || userData.role === "ADMIN" ? <AddNewLesson refetchAdmin={refetchAdmin} refetchCoach={refetchCoach}/> : "" }
                 </Grid>
                 <Grid item xs={12}>
             <LessonsTableList data={tableData} handleDeleteButton={handleDeleteButton} handleUnbookButton={handleUnbookButton}/>
