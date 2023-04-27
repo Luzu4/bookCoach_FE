@@ -85,11 +85,11 @@ const EditUserData: React.FC = () => {
                 password: "",
                 confirmPassword: "",
                 nickName: userDataFetch.nickName,
-                city: userDataFetch.userDetails.city,
-                country: userDataFetch.userDetails.country,
-                language: userDataFetch.userDetails.language,
-                description: userDataFetch.userDetails.description,
-                imageUrl: userDataFetch.userDetails.imageUrl
+                city: userDataFetch.userDetailsAll.city,
+                country: userDataFetch.userDetailsAll.country,
+                language: userDataFetch.userDetailsAll.language,
+                description: userDataFetch.userDetailsAll.description,
+                imageUrl: userDataFetch.userDetailsAll.imageUrl
             })
         }
 

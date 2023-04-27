@@ -8,7 +8,6 @@ type TableProps = {
     refetch: any
 }
 const UsersTableList: React.FC<TableProps> = ({data, refetch}) => {
-
     const columns: GridColDef[] = [
         {field: 'id', headerName: 'ID', width: 70, flex: 0.1},
         {field: 'email', headerName: 'Email', width: 200, flex: 0.2},
@@ -18,7 +17,7 @@ const UsersTableList: React.FC<TableProps> = ({data, refetch}) => {
             field: 'userDetails', headerName: 'Games', flex: 0.3,
             renderCell: (params) => {
                 let arrayGames: string[] = [];
-                params.row.userDetails.game.map((game: { name: string; }) => {
+                params.row.userDetailsAll.game.map((game: { name: string; }) => {
                     arrayGames.push(game.name + ", ");
                 });
                 return <div>{arrayGames}</div>;
@@ -31,7 +30,7 @@ const UsersTableList: React.FC<TableProps> = ({data, refetch}) => {
             headerName: 'Actions',
             sortable: false,
             renderCell: (params) => {
-                return <EditUser userId={params.id + ""} userGames={params.row.userDetails.game}
+                return <EditUser userId={params.id + ""} userGames={params.row.userDetailsAll.game}
                                  userRole={params.row.role} refetch={refetch}/>;
             },
         },

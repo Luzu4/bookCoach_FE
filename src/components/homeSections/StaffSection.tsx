@@ -6,21 +6,24 @@ import {UserDetails} from "../../interfaces";
 
 type StaffType = {
     nickName: string;
-    userDetails?: UserDetails;
+    userDetailsAll?: UserDetails;
 }
 
 function getRandom(arr: any[], n: number) {
-    var result = new Array(n),
-        len = arr.length,
-        taken = new Array(len);
-    if (n > len)
-        throw new RangeError("getRandom: more elements taken than available");
-    while (n--) {
-        var x = Math.floor(Math.random() * len);
-        result[n] = arr[x in taken ? taken[x] : x];
-        taken[x] = --len in taken ? taken[len] : len;
+    if(arr){
+        var result = new Array(n),
+            len = arr.length,
+            taken = new Array(len);
+        if (n > len)
+            throw new RangeError("getRandom: more elements taken than available");
+        while (n--) {
+            var x = Math.floor(Math.random() * len);
+            result[n] = arr[x in taken ? taken[x] : x];
+            taken[x] = --len in taken ? taken[len] : len;
+        }
+        return result;
     }
-    return result;
+
 }
 
 const StaffSection = () => {
@@ -31,7 +34,10 @@ const StaffSection = () => {
 
     useEffect(() => {
         if (staffDataFetch) {
-            setStaff(getRandom(staffDataFetch, 3));
+            if(staffDataFetch.length>0){
+                setStaff(getRandom(staffDataFetch, 3));
+            }
+
         }
 
     }, [staffDataFetch])
@@ -48,10 +54,10 @@ const StaffSection = () => {
                         <Grid margin={"30px"} item xs={6} sm={4} lg={3} key={member.nickName}>
                             <CoachCard coachNick={member.nickName}
                                        coachName={member.nickName}
-                                       description={member.userDetails?.description}
+                                       description={member.userDetailsAll?.description}
                                 // @ts-ignore
-                                       gameName={getRandom(member.userDetails?.game, 1)[0].name}
-                                       imgPath={member.userDetails?.imageUrl}/>
+                                       gameName={getRandom(member.userDetailsAll?.game, 1)[0].name}
+                                       imgPath={member.userDetailsAll?.imageUrl}/>
                         </Grid>
                     ))}
                 </Grid>
