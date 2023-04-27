@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import {
-    FormControl,
+    FormControl, FormHelperText,
     Grid,
     IconButton,
     InputAdornment,
@@ -19,7 +19,7 @@ import {useForm, SubmitHandler} from "react-hook-form";
 import {useAppDispatch} from "../../store/store";
 import {authenticateUser, userSelector} from "../../store/userSlice";
 import {useSelector} from "react-redux";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 
 const boxContainerStyle = {
     position: 'absolute' as 'absolute',
@@ -55,6 +55,7 @@ const LoginModal: React.FC = () => {
 
 
     const {register, handleSubmit} = useForm<formInput>();
+    const [userDataError, setUserDataError] = useState(false);
 
     const onSubmit: SubmitHandler<formInput> = data => {
 
@@ -62,9 +63,11 @@ const LoginModal: React.FC = () => {
             email: data.email,
             password: data.password
         };
-        dispatch(authenticateUser(reqBody)).then(response=>{
-            console.log(response);
-        });
+        dispatch(authenticateUser(reqBody)).unwrap()
+            .then()
+            .catch(error=>{
+                setUserDataError(true)
+            });
     }
 
     return (
@@ -88,13 +91,15 @@ const LoginModal: React.FC = () => {
                                 </Typography>
                             </Grid>
                             <FormControl sx={{m: 1, width: '25ch'}} variant="outlined">
-                                <TextField {...register("email")} type="email" id="outlined-basic" label="Email"
+                                <TextField {...register("email")} type="email" onChange={()=>{setUserDataError(false)}} id="outlined-basic" label="Email"
                                            variant="outlined"/>
+                                {userDataError && <FormHelperText style={{color:"red"}} id="component-error-text"> Wrong Email or Password</FormHelperText>}
                             </FormControl>
                             <FormControl sx={{m: 1, width: '25ch'}} variant="outlined">
                                 <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
                                 <OutlinedInput
                                     {...register("password")}
+                                    onChange={()=>{setUserDataError(false)}}
                                     id="outlined-adornment-password"
                                     type={showPassword ? 'text' : 'password'}
                                     endAdornment={
@@ -111,7 +116,9 @@ const LoginModal: React.FC = () => {
                                     }
                                     label="Password"
                                 />
+                                {userDataError && <FormHelperText style={{color:"red"}} id="component-error-text"> Wrong Email or Password</FormHelperText>}
                             </FormControl>
+
                             <Stack direction="row" spacing={2}>
                                 <Button onClick={handleClose} variant="contained">Cancel</Button>
                                 <Button type="submit" variant="contained">Log in</Button>

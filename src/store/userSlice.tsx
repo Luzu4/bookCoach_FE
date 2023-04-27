@@ -23,6 +23,11 @@ export const authenticateUser = createAsyncThunk(
             });
 
             const data: ResponseAuthData = await response.json();
+
+            if(!data.token){
+                throw new Error("Wrong email or password!");
+            }
+
             const decodedToken: TokenData = jwt_decode(data.token);
 
             const userData: UserStateData = {
@@ -72,11 +77,12 @@ export const registerUser = createAsyncThunk(
             body: JSON.stringify(payload),
         });
 
-        if (!response.ok) {
-            throw new Error("Something went wrong! Try again");
-        }
+
 
         const data: ResponseAuthData = await response.json();
+        if(!data.token){
+            throw new Error("Email already exists in database")
+        }
         const decodedToken: TokenData = jwt_decode(data.token);
 
         const userData: UserStateData = {
@@ -110,11 +116,11 @@ const userSlice = createSlice({
         builder.addCase(checkToken.fulfilled, (state, action) => {
             return action.payload;
         });
-        builder.addCase(authenticateUser.rejected, (state, action)=>{
-            console.log("ERRRROR")
-            console.log(action.error);
-            return
-        })
+        // builder.addCase(authenticateUser.rejected, (state, action)=>{
+        //     console.log("ERRRROR")
+        //     console.log(action.error);
+        //     return
+        // })
     }
 });
 

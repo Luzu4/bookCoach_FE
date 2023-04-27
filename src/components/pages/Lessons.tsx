@@ -45,9 +45,11 @@ const Lessons = () => {
 
     }
 
-    const [deletePlayerFromLesson, responsex] = useRemovePlayerFromLessonMutation();
+    const [deletePlayerFromLesson] = useRemovePlayerFromLessonMutation();
     const handleUnbookButton = (lessonId: any)=>{
-        deletePlayerFromLesson(lessonId);
+        deletePlayerFromLesson(lessonId).unwrap()
+            .then()
+            .catch((error) => console.log(error.data.message))
         refetchPlayer();
         refetchCoach();
         refetchAdmin();

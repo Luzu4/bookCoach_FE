@@ -99,6 +99,7 @@ const EditGame: React.FC<props> = ({gameId,refetch}) => {
 
         updateGameData(reqBody);
         refetch();
+        setOpen(false);
 
     }
     return (

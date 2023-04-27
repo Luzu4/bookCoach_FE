@@ -75,6 +75,7 @@ const EditUser: React.FC<props> = ({userId,userGames,userRole,refetch}) => {
             }
             updateUserGamesAndRole(userDataToSave);
             refetch();
+            setOpen(false);
         }
     }
     const handleChangeRole = (event: SelectChangeEvent)=>{

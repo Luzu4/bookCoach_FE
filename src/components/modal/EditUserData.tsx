@@ -19,8 +19,9 @@ import {useForm, SubmitHandler} from "react-hook-form";
 import {useAppDispatch} from "../../store/store";
 import {userSelector} from "../../store/userSlice";
 import {useSelector} from "react-redux";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {useGetUserByEmailQuery, useUpdateUserDataMutation} from "../../store/bookCoachApi";
+import FormHelperError from "../FormHelperError";
 
 const boxContainerStyle = {
     position: 'absolute' as 'absolute',
@@ -96,6 +97,10 @@ const EditUserData: React.FC = () => {
 
     }, [userDataFetch])
 
+    const [emptyEmailError, setEmptyEmailError]= useState(false)
+    const [confirmPasswordError, setConfirmPasswordError] = useState(false)
+    const [emailExistsError, setEmailExistsError] = useState(false)
+
     const [updateUserData, response] = useUpdateUserDataMutation();
     const onSubmit: SubmitHandler<formInput> = data => {
 
@@ -109,10 +114,20 @@ const EditUserData: React.FC = () => {
             description: data.description,
             imageUrl: data.imageUrl
         };
-        if (data.password === data.confirmPassword) {
-            updateUserData(reqBody)
-        } else {
-            alert("passwords must be identical")
+        if (data.password === data.confirmPassword && data.email) {
+            if(!(userData.email === data.email)){
+                updateUserData(reqBody).unwrap()
+                    .then()
+                    .catch(error=>{
+                        if(error.data.message === "This Email is Already in use"){
+                            setEmailExistsError(true)
+                        }
+                    })
+            }
+        } else if(data.password !== data.confirmPassword) {
+            setConfirmPasswordError(true)
+        }else if(!data.email){
+            setEmptyEmailError(true)
         }
 
 
@@ -140,13 +155,19 @@ const EditUserData: React.FC = () => {
                             </Grid>
                             <FormControl sx={{m: 1, width: '25ch'}} variant="outlined">
                                 <TextField {...register("email")} value={user.email}
-                                           onChange={(event) => setUser({...user, email: event.target.value})}
+                                           onChange={(event) => {
+                                               setEmailExistsError(false)
+                                               setEmptyEmailError(false)
+                                               setUser({...user, email: event.target.value})}}
                                            type="email" label="Email"
                                            variant="outlined"/>
+                                <FormHelperError message={"This field cannot be empty!"} isError={emptyEmailError}/>
+                                <FormHelperError message={"Email Already Exists!"} isError={emailExistsError}/>
                             </FormControl>
                             <FormControl sx={{m: 1, width: '25ch'}} variant="outlined">
                                 <TextField {...register("nickName")} value={user.nickName}
-                                           onChange={(event) => setUser({...user, nickName: event.target.value})}
+                                           onChange={(event) =>
+                                               setUser({...user, nickName: event.target.value})}
                                            type="text" label="NickName"
                                            variant="outlined"/>
                             </FormControl>
@@ -202,11 +223,14 @@ const EditUserData: React.FC = () => {
                                     }
                                     label="Password"
                                 />
+
                             </FormControl>
                             <FormControl sx={{m: 1, width: '25ch'}} variant="outlined">
                                 <TextField {...register("confirmPassword")} type="password"
+                                           onChange={()=>setConfirmPasswordError(false)}
                                            label="ConfirmPassword"
                                            variant="outlined"/>
+                                <FormHelperError message={"Password must be same"} isError={confirmPasswordError}/>
                             </FormControl>
                             <Stack direction="row" spacing={12}>
                                 <Button onClick={handleClose} variant="contained">Cancel</Button>

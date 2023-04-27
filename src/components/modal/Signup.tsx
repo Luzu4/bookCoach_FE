@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import {
-    FormControl,
+    FormControl, FormHelperText,
     Grid,
     IconButton,
     InputAdornment,
@@ -19,7 +19,8 @@ import {useForm, SubmitHandler} from "react-hook-form";
 import {useAppDispatch} from "../../store/store";
 import { registerUser, userSelector} from "../../store/userSlice";
 import {useSelector} from "react-redux";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
+import FormHelperError from "../FormHelperError";
 
 const boxContainerStyle = {
     position: 'absolute' as 'absolute',
@@ -58,6 +59,12 @@ const Signup: React.FC = () => {
 
     const {register, handleSubmit} = useForm<formInput>();
 
+    const [passwordError, setPasswordError] = useState(false);
+    const [confirmPasswordError, setConfirmPasswordError] = useState(false);
+    const [nickNameError, setNickNameError] = useState(false);
+    const [emailEmptyError, setEmailEmptyError] = useState(false)
+    const [emailExistsError, setEmailExistsError] = useState(false)
+
     const onSubmit: SubmitHandler<formInput> = data => {
 
         const reqBody = {
@@ -65,20 +72,26 @@ const Signup: React.FC = () => {
             password: data.password,
             nickName: data.nickName
         };
-        if(data.password === data.confirmPassword){
-            dispatch(registerUser(reqBody));
-        }else{
-            alert("passwords must be identical")
+        if(data.password === data.confirmPassword && data.email && data.password && data.nickName){
+            dispatch(registerUser(reqBody)).unwrap()
+                .then()
+                .catch(error=>{
+                    if(error.message === "Email already exists in database"){
+                        setEmailExistsError(true);
+                    }
+                });
+        }else if (data.password !== data.confirmPassword ){
+            setConfirmPasswordError(true);
+        }else if (!data.email){
+            setEmailEmptyError(true)
+        }else if(!data.nickName){
+            setNickNameError(true)
+        }else if(!data.password){
+            setPasswordError(true)
         }
 
 
     }
-    const userState = useSelector(userSelector);
-    useEffect(()=>{
-        if(userState.email){
-            // window.location.href="/";
-        }
-    },[userState,dispatch])
 
 
     return (
@@ -102,18 +115,22 @@ const Signup: React.FC = () => {
                                 </Typography>
                             </Grid>
                             <FormControl  sx={{m: 1, width: '25ch'}} variant="outlined">
-                                <TextField {...register("email")} type="email" label="Email"
+                                <TextField {...register("email")} onChange={()=>{setEmailEmptyError(false)}}  type="email" label="Email"
                                            variant="outlined"/>
+                                <FormHelperError message={"Field cannot be empty"} isError={emailEmptyError}/>
+                                <FormHelperError message={"Email already exists in database!"} isError={emailExistsError}/>
                             </FormControl>
                             <FormControl sx={{m: 1, width: '25ch'}} variant="outlined">
-                                <TextField {...register("nickName")} type="text"  label="NickName"
+                                <TextField {...register("nickName")} onChange={()=>setNickNameError(false)} type="text"  label="NickName"
                                            variant="outlined"/>
+                                <FormHelperError message={"Field cannot be empty"} isError={nickNameError}/>
                             </FormControl>
                             <FormControl sx={{m: 1, width: '25ch'}} variant="outlined">
                                 <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
                                 <OutlinedInput
                                     {...register("password")}
                                     id="outlined-adornment-password"
+                                    onChange={()=>setPasswordError(false)}
                                     type={showPassword ? 'text' : 'password'}
                                     endAdornment={
                                         <InputAdornment position="end">
@@ -129,10 +146,12 @@ const Signup: React.FC = () => {
                                     }
                                     label="Password"
                                 />
+                                <FormHelperError message={"Field cannot be empty"} isError={passwordError}/>
                             </FormControl>
                             <FormControl sx={{m: 1, width: '25ch'}} variant="outlined">
-                                <TextField {...register("confirmPassword")} type="password" label="ConfirmPassword"
+                                <TextField {...register("confirmPassword")} onChange={()=>setConfirmPasswordError(false)} type="password" label="ConfirmPassword"
                                            variant="outlined"/>
+                                <FormHelperError message={"Passwords are different!"} isError={confirmPasswordError}/>
                             </FormControl>
                             <Stack direction="row" spacing={2}>
                                 <Button onClick={handleClose} variant="contained">Cancel</Button>

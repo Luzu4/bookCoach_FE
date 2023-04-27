@@ -18,6 +18,7 @@ import {
 import {Game, Lesson} from "../../interfaces";
 import SelectDropDown from "../selectDropDown/SelectDropDown";
 import {SelectChangeEvent} from "@mui/material/Select";
+import FormHelperError from "../FormHelperError";
 
 
 const boxContainerStyle = {
@@ -64,8 +65,12 @@ const LoginModal: React.FC<props> = ({refetchCoach, refetchAdmin}) => {
         }
     }, [userGamesFetch])
 
-    const {data: lessonAlreadyAddedFetch} = useGetLessonsByUserIdAndDateQuery(dateToAddLesson?.format("YYYY-MM-DD") + "", {skip:!dateToAddLesson})
+    const {data: lessonAlreadyAddedFetch, refetch} = useGetLessonsByUserIdAndDateQuery(dateToAddLesson?.format("YYYY-MM-DD") + "", {skip:!dateToAddLesson})
     const [addNewLessons] = useAddNewLessonsMutation();
+
+    const [selectGameError, setSelectGameError] = useState(false)
+    const [selectDateError, setSelectDateError] = useState(false)
+    const [selectHoursError, setSelectHoursError] = useState(false)
 
     const handleAddButtonClick = () => {
         if(lessonHours.length>0 && dateToAddLesson && gameId){
@@ -79,7 +84,18 @@ const LoginModal: React.FC<props> = ({refetchCoach, refetchAdmin}) => {
                 })
             refetchCoach();
             refetchAdmin();
+            refetch();
+            setSelectGameError(false)
+            setSelectDateError(false)
+            setSelectHoursError(false)
+            setDateToAddLesson(null)
 
+        }else if(!gameId){
+            setSelectGameError(true)
+        }else if(!dateToAddLesson){
+            setSelectDateError(true)
+        }else if(lessonHours.length<1){
+            setSelectHoursError(true)
         }
     }
 
@@ -125,12 +141,14 @@ const LoginModal: React.FC<props> = ({refetchCoach, refetchAdmin}) => {
                         <Stack direction="column" spacing={2}>
 
                             <SelectDropDown id={gameId} handleChange={handleChangeGameName} values={games}/>
+                            <FormHelperError message={"First select Game"} isError={selectGameError}/>
 
                             <DatePicker disablePast label="Lesson Date" value={dateToAddLesson}
                                         onChange={(newDateToAddLesson) => handleDateChange(newDateToAddLesson)}/>
+                           <FormHelperError message={"First Select date!"} isError={selectDateError}/>
                             {dateToAddLesson ? <MultiSelectDropDown availableHours={availableHours}
                                                                     setLessonHours={setLessonHours}/> : ""}
-
+                            <FormHelperError message={'Select hours of lessons'} isError={selectHoursError}/>
                         </Stack>
                         <Stack direction="row" spacing={2}>
                             <Button onClick={handleClose} variant="contained">Cancel</Button>
