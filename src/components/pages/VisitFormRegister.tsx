@@ -109,10 +109,10 @@ const VisitFormRegister = () => {
                 "playerEmail": email,
                 "lessonId": id,
             }
-            addPlayerToLesson(lessonDataToSave).unwrap()
+            addPlayerToLesson(lessonDataToSave)
                 .then(() => {
                     setLessonsDataTable(lessonsDataTable.filter(lesson=> lesson.id !==id))
-                })
+                }).catch((error) => console.log(error.data.message))
         }
     }
     return (

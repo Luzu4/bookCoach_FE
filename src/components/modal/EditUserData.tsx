@@ -22,6 +22,7 @@ import {useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {useGetUserByEmailQuery, useUpdateUserDataMutation} from "../../store/bookCoachApi";
 import FormHelperError from "../FormHelperError";
+import {useLocalState} from "../../store/useLocalStorage";
 
 const boxContainerStyle = {
     position: 'absolute' as 'absolute',
@@ -53,6 +54,7 @@ const EditUserData: React.FC = () => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const [jwt,setJwt] = useLocalState("","jwt");
 
     const [showPassword, setShowPassword] = React.useState(false);
 
@@ -114,16 +116,24 @@ const EditUserData: React.FC = () => {
             description: data.description,
             imageUrl: data.imageUrl
         };
+        console.log(reqBody)
         if (data.password === data.confirmPassword && data.email) {
-            if(!(userData.email === data.email)){
                 updateUserData(reqBody).unwrap()
                     .then()
                     .catch(error=>{
                         if(error.data.message === "This Email is Already in use"){
                             setEmailExistsError(true)
                         }
-                    })
-            }
+                    }).then(()=>{
+                    if(userData.email !== reqBody.email){
+                        localStorage.removeItem("jwt");
+                        setJwt("");
+                        window.location.href = "/";
+                    }
+
+                })
+
+
         } else if(data.password !== data.confirmPassword) {
             setConfirmPasswordError(true)
         }else if(!data.email){

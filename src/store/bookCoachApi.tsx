@@ -18,7 +18,7 @@ export const bookCoachApi = createApi({
         getAllGames: builder.query<Game[], void>({
             query: () => "game/all"
         }),
-        getAllLessons: builder.query<Lesson[], void>({
+        getAllLessons: builder.mutation<Lesson[], void>({
             query:()=> 'lesson/all'
         }),
         getGameById: builder.query<Game, number>({
@@ -62,12 +62,12 @@ export const bookCoachApi = createApi({
                 query: (id) => `user/coaches/game/${id}`,
             }
         ),
-        getLessonsByPlayerId: builder.query<Lesson[], void>({
+        getLessonsByPlayerId: builder.mutation<Lesson[], void>({
             query: () => ({
                 url: 'lesson/all/player',
             })
         }),
-        getLessonsByCoachId: builder.query<Lesson[], void>({
+        getLessonsByCoachId: builder.mutation<Lesson[], void>({
             query: () => ({
                 url: `lesson/all/coach`,
             })
@@ -164,8 +164,8 @@ export const {
     useAddNewLessonMutation,
     useGetAllGamesQuery,
     useGetAllCoachesByGameIdQuery,
-    useGetLessonsByPlayerIdQuery,
-    useGetLessonsByCoachIdQuery,
+    useGetLessonsByPlayerIdMutation,
+    useGetLessonsByCoachIdMutation,
     useRemoveLessonByIdMutation,
     useRemovePlayerFromLessonMutation,
     useGetLessonsByUserIdAndDateQuery,
@@ -179,7 +179,7 @@ export const {
     useUpdateUserDataMutation,
     useUpdateGameDataMutation,
     useAddNewGameMutation,
-    useGetAllLessonsQuery,
+    useGetAllLessonsMutation,
     useRemoveGameByIdMutation
 
 } = bookCoachApi
