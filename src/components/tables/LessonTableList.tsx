@@ -46,17 +46,16 @@ const LessonsTableList: React.FC<TableProps> = ({data, handleDeleteButton, handl
             renderCell: (params) => {
                 return <div>{(Date.now() < Date.parse(params.row.date)) ?
                     <div>{(userData.role === "COACH" || userData.role === "ADMIN") ? <div>
-                        {params.row.playerEmail !==null ? <Stack direction="row" spacing={2}><Button onClick={() => handleDeleteButton(params.id)}
-                                                                                                     color="secondary">DELETE</Button> <Button
-                            onClick={() => handleUnbookButton(params.id)}
-                            color="secondary">UNBOOK</Button></Stack>:<Button onClick={() => handleDeleteButton(params.id)}
-                                                                              color="secondary">DELETE</Button> }
-                        </div>
-                         :
+                            {params.row.playerEmail !== null ?
+                                <Stack direction="row" spacing={2}><Button onClick={() => handleDeleteButton(params.id)}
+                                                                           color="secondary">DELETE</Button> <Button
+                                    onClick={() => handleUnbookButton(params.id)}
+                                    color="secondary">UNBOOK</Button></Stack> :
+                                <Button onClick={() => handleDeleteButton(params.id)}
+                                        color="secondary">DELETE</Button>}
+                        </div> :
                         <Button onClick={() => handleUnbookButton(params.id)}
-                                color="secondary">UNBOOK</Button>}</div> : ""}</div>
-
-                    ;
+                                color="secondary">UNBOOK</Button>}</div> : ""}</div>;
             },
         },
     ];

@@ -20,12 +20,8 @@ function getRandom(arr: Game[], n: number) {
 }
 
 const Home = () => {
-
-
     const {data: gamesDataFetch} = useGetAllGamesQuery();
-
     const [games, setGames] = useState<Game[]>();
-
     useEffect(() => {
         if (gamesDataFetch) {
             setGames(getRandom(gamesDataFetch, 3));
@@ -35,7 +31,7 @@ const Home = () => {
     return (
         <div>
             <Grid>
-                <Grid style={{color:"#E9B872"}}>
+                <Grid style={{color: "#E9B872"}}>
                     <h1>BEST SITE TO FIND COACH</h1>
                     <p>Why do we use it?
                         It is a long established fact that a reader will be distracted by the readable content of a
@@ -54,7 +50,6 @@ const Home = () => {
 
                     </p>
                 </Grid>
-
                 <Grid>
                     <SearchInput/>
                 </Grid>

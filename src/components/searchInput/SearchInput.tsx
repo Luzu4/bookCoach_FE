@@ -26,14 +26,12 @@ export default function BasicSelect() {
     const [selectGameError, setSelectGameError] = useState(false);
 
     const handleFindCoachClick = () => {
-        if (!game){
+        if (!game) {
             setSelectGameError(true);
-
         }
         if (game) {
             navigate("/coaches/game/" + game)
         }
-
     }
 
     useEffect(() => {
@@ -54,16 +52,15 @@ export default function BasicSelect() {
                             value={game}
                             label="Age"
                             onChange={handleChange}
-                            className={selectGameError ? "danger" : ""}
-                        >
+                            className={selectGameError ? "danger" : ""}>
                             {games.map(game => (
                                 <MenuItem style={{backgroundColor: "#E9B872"}} key={game.id}
                                           value={game.id}>{game.name}</MenuItem>
                             ))}
-
                         </Select>
                     </FormControl>
-                    {selectGameError && <FormHelperText style={{color:"red"}} id="component-error-text"> First Select Game</FormHelperText>}
+                    {selectGameError && <FormHelperText style={{color: "red"}} id="component-error-text"> First Select
+                        Game</FormHelperText>}
                     <Button style={{margin: "30px"}} variant="outlined" color="error" onClick={handleFindCoachClick}>Find
                         Coach!</Button>
                 </Stack>

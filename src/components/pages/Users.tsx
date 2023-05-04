@@ -1,13 +1,7 @@
 import React, {useEffect, useState} from 'react';
-
-import {
-    useGetAllUsersQuery,
-
-} from "../../store/bookCoachApi";
-
+import {useGetAllUsersQuery} from "../../store/bookCoachApi";
 import {UserForTable} from "../../interfaces";
 import UsersTableList from "../tables/UsersTableList";
-
 
 
 const Users = () => {
@@ -15,13 +9,11 @@ const Users = () => {
 
     const [tableData, setTableData] = useState<UserForTable[]>([]);
 
-
     useEffect(() => {
-        if(allUsers){
+        if (allUsers) {
             setTableData(allUsers);
         }
     }, [allUsers])
-
 
     return (
         <div>

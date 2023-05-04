@@ -19,21 +19,20 @@ import Footer from "./components/footer/Footer";
 function App() {
 
     const dispatch = useAppDispatch();
+    const [jwt, setJwt] = useLocalState("", "jwt");
 
-    const [jwt,setJwt] = useLocalState("", "jwt");
-
-    useEffect(()=>{
-        if(jwt){
+    useEffect(() => {
+        if (jwt) {
             const decodedToken: TokenData = jwt_decode(jwt);
-            if(Date.now() >= decodedToken.exp*1000){
+            if (Date.now() >= decodedToken.exp * 1000) {
                 localStorage.removeItem("jwt");
                 setJwt("");
                 window.location.href = "/";
-            }else{
+            } else {
                 dispatch(checkToken(jwt));
             }
         }
-    },[])
+    }, [])
 
     return (
         <div className="App">
@@ -42,21 +41,19 @@ function App() {
                 <Route index element={<Main/>}/>
                 <Route path={"/lessons/register"} element={<VisitFormRegister/>}/>
                 <Route path={"/user/coach/lessons"} element={
-
-                        <PrivateRouteRole roles={[Role.COACH]}>
-                    <Lessons/>
-                        </PrivateRouteRole>
+                    <PrivateRouteRole roles={[Role.COACH]}>
+                        <Lessons/>
+                    </PrivateRouteRole>
                 }/>
                 <Route path={"/user/admin/lessons"} element={
-
                     <PrivateRouteRole roles={[Role.ADMIN]}>
                         <Lessons/>
                     </PrivateRouteRole>
                 }/>
                 <Route path={"/user/player/lessons"} element={
-                        <PrivateRouteRole roles={[Role.PLAYER]}>
+                    <PrivateRouteRole roles={[Role.PLAYER]}>
                         <Lessons/>
-                        </PrivateRouteRole>
+                    </PrivateRouteRole>
                 }/>
                 <Route path={"/coaches/game/:id"} element={<Coaches/>}/>
                 <Route path={"/users"} element={<Users/>}/>
@@ -64,7 +61,6 @@ function App() {
                     <PrivateRouteRole roles={[Role.ADMIN]}>
                         <Games/>
                     </PrivateRouteRole>
-
                 }/>
             </Routes>
             <Footer/>

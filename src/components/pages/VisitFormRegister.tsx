@@ -10,7 +10,7 @@ import {
     useGetAllUserGamesByUserIdQuery,
     useGetFreeLessonsByGameIdAndUserIdQuery,
 } from '../../store/bookCoachApi';
-import LessonsTableForRegister from "../LessonsTableForRegister";
+import LessonsTableForRegister from "../tables/LessonsTableForRegister";
 import {userSelector} from "../../store/userSlice";
 import {User} from "../../interfaces";
 
@@ -28,7 +28,7 @@ type Game = {
 
 type Lesson =
     {
-        id:number;
+        id: number;
 
         date: string;
         time: string;
@@ -48,7 +48,6 @@ const VisitFormRegister = () => {
         if (allCoaches) {
             setCoaches(allCoaches);
         }
-
     }, [allCoaches]);
 
 
@@ -111,7 +110,7 @@ const VisitFormRegister = () => {
             }
             addPlayerToLesson(lessonDataToSave)
                 .then(() => {
-                    setLessonsDataTable(lessonsDataTable.filter(lesson=> lesson.id !==id))
+                    setLessonsDataTable(lessonsDataTable.filter(lesson => lesson.id !== id))
                 }).catch((error) => console.log(error.data.message))
         }
     }

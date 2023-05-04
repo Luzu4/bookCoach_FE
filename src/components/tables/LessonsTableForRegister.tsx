@@ -4,7 +4,6 @@ import Button from '@mui/material/Button';
 import ScheduleSendIcon from '@mui/icons-material/ScheduleSend';
 
 
-
 type TableProps = {
     data:{}[],
     handleButtonSendClick:(id: string | number)=>void

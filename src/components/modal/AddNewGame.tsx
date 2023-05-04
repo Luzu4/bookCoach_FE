@@ -60,7 +60,7 @@ const AddNewGame: React.FC<props> = ({refetch}) => {
     const [nameExistsError, setNameExistsError] = useState(false)
 
 
-    const [addNewGameData, response] = useAddNewGameMutation();
+    const [addNewGameData] = useAddNewGameMutation();
     const onSubmit: SubmitHandler<formInput> = data => {
 
         const reqBody = {
@@ -73,8 +73,8 @@ const AddNewGame: React.FC<props> = ({refetch}) => {
         if (data.name.length > 1 && data.imageUrl.length > 0 && data.description.length > 0) {
             addNewGameData(reqBody).unwrap()
                 .then()
-                .catch(error=>{
-                    if(error.data.message === "Game already exists!"){
+                .catch(error => {
+                    if (error.data.message === "Game already exists!") {
                         setNameExistsError(true);
                     }
                 });
@@ -119,7 +119,8 @@ const AddNewGame: React.FC<props> = ({refetch}) => {
                                            type="text" id="outlined-basic" label="Name"
                                            variant="outlined"/>
                                 <FormHelperError message={"This field cannot be empty"} isError={nameError}/>
-                                <FormHelperError message={"This name already exists in Database"} isError={nameExistsError}/>
+                                <FormHelperError message={"This name already exists in Database"}
+                                                 isError={nameExistsError}/>
                             </FormControl>
                             <FormControl sx={{m: 1, width: '25ch'}} variant="outlined">
                                 <TextField {...register("shortGameName")} value={game.shortGameName}

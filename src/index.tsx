@@ -10,15 +10,14 @@ import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+    document.getElementById('root') as HTMLElement
 );
 root.render(
-
     <Provider store={store}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-   <BrowserRouter>
-    <App />
-   </BrowserRouter>
+            <BrowserRouter>
+                <App/>
+            </BrowserRouter>
         </LocalizationProvider>
     </Provider>
 );

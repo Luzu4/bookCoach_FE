@@ -108,11 +108,6 @@ const userSlice = createSlice({
         builder.addCase(checkToken.fulfilled, (state, action) => {
             return action.payload;
         });
-        // builder.addCase(authenticateUser.rejected, (state, action)=>{
-        //     console.log("ERRRROR")
-        //     console.log(action.error);
-        //     return
-        // })
     }
 });
 

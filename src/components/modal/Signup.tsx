@@ -99,8 +99,6 @@ const Signup: React.FC = () => {
         } else if (!data.password) {
             setPasswordError(true)
         }
-
-
     }
 
 
@@ -111,8 +109,7 @@ const Signup: React.FC = () => {
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
+                aria-describedby="modal-modal-description">
                 <Box sx={boxContainerStyle}>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <Grid container spacing={2}
@@ -152,14 +149,12 @@ const Signup: React.FC = () => {
                                                 aria-label="toggle password visibility"
                                                 onClick={handleClickShowPassword}
                                                 onMouseDown={handleMouseDownPassword}
-                                                edge="end"
-                                            >
+                                                edge="end">
                                                 {showPassword ? <VisibilityOff/> : <Visibility/>}
                                             </IconButton>
                                         </InputAdornment>
                                     }
-                                    label="Password"
-                                />
+                                    label="Password"/>
                                 <FormHelperError message={"Field cannot be empty"} isError={passwordError}/>
                             </FormControl>
                             <FormControl sx={{m: 1, width: '25ch'}} variant="outlined">

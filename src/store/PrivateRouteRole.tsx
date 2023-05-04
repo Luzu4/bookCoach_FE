@@ -19,8 +19,8 @@ const PrivateRouteRole: React.FC<Props> = ({children, roles}) => {
     if (!jwt || !userStatus.isAuthenticated) {
         return <Navigate to="/"/>
     }
-    if(roles){
-        if (!roles?.some((role) => role === userStatus.role)){
+    if (roles) {
+        if (!roles?.some((role) => role === userStatus.role)) {
             return <Navigate to="/"/>
         }
     }

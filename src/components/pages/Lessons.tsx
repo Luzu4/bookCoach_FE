@@ -9,14 +9,12 @@ import {
 import {useSelector} from "react-redux";
 import {userSelector} from "../../store/userSlice";
 import {Lesson} from "../../interfaces";
-import {useLocalState} from "../../store/useLocalStorage";
 import AddNewLesson from "../modal/AddNewLesson";
 import {Grid} from "@mui/material";
 
 
 const Lessons = () => {
 
-    const [jwt, setJwt] = useLocalState("", "jwt")
     const userData = useSelector(userSelector);
 
     const [getPlayerLesson] = useGetLessonsByPlayerIdMutation();
@@ -24,7 +22,6 @@ const Lessons = () => {
     const [getAdminLesson] = useGetAllLessonsMutation();
 
     const [tableData, setTableData] = useState<Lesson[]>([]);
-
 
     useEffect(() => {
         if (userData.role === "COACH") {
@@ -43,7 +40,7 @@ const Lessons = () => {
             });
         }
     }, [getPlayerLesson, getCoachLesson, getAdminLesson])
-    const [deleteLesson, response] = useRemoveLessonByIdMutation();
+    const [deleteLesson] = useRemoveLessonByIdMutation();
     const handleDeleteButton = (lessonId: any) => {
         deleteLesson(lessonId);
         if (userData.role === "COACH") {
@@ -63,8 +60,9 @@ const Lessons = () => {
     const handleUnbookButton = (lessonId: any) => {
         deletePlayerFromLesson(lessonId).unwrap()
             .then()
-            .catch((error) => console.log(error.data.message))
-
+            .catch((error) => {
+                console.log(error)
+            });
         if (userData.role === "PLAYER") {
             getPlayerLesson().unwrap().then(response => {
                 setTableData(response);
@@ -80,16 +78,16 @@ const Lessons = () => {
                 setTableData(response);
             });
         }
-
     }
-
 
     return (
         <div>
             <Grid container display="flex" alignContent={"center"}>
                 <Grid item xs={12}>
-                    {userData.role === "COACH" || userData.role === "ADMIN" ?
-                        <AddNewLesson refetchAdmin={getAdminLesson} refetchCoach={getCoachLesson}/> : ""}
+                    {userData.role === "COACH" ?
+                        <AddNewLesson refetchTable={getCoachLesson}/> : ""}
+                    {userData.role === "ADMIN" ?
+                        <AddNewLesson refetchTable={getAdminLesson}/> : ""}
                 </Grid>
                 <Grid item xs={12}>
                     <LessonsTableList data={tableData} handleDeleteButton={handleDeleteButton}

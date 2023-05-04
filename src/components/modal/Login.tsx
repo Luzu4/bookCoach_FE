@@ -44,20 +44,15 @@ const LoginModal: React.FC = () => {
     const [userEmailVerifiedError, setUserEmailVerifiedError] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-
-
     const [showPassword, setShowPassword] = React.useState(false);
 
-    const handleClickShowPassword = () => setShowPassword((show) => !show);
 
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
     };
     const dispatch = useAppDispatch();
-
-
     const {register, handleSubmit} = useForm<formInput>();
-
 
     const onSubmit: SubmitHandler<formInput> = data => {
 
@@ -73,7 +68,6 @@ const LoginModal: React.FC = () => {
                 } else if (error.message === "Email not verified!") {
                     setUserEmailVerifiedError(true)
                 }
-
             });
     }
 
@@ -84,8 +78,7 @@ const LoginModal: React.FC = () => {
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
+                aria-describedby="modal-modal-description">
                 <Box sx={boxContainerStyle}>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <Grid container spacing={2}
@@ -124,19 +117,16 @@ const LoginModal: React.FC = () => {
                                                 aria-label="toggle password visibility"
                                                 onClick={handleClickShowPassword}
                                                 onMouseDown={handleMouseDownPassword}
-                                                edge="end"
-                                            >
+                                                edge="end">
                                                 {showPassword ? <VisibilityOff/> : <Visibility/>}
                                             </IconButton>
                                         </InputAdornment>
                                     }
-                                    label="Password"
-                                />
+                                    label="Password"/>
                                 {userDataError &&
                                     <FormHelperText style={{color: "red"}} id="component-error-text"> Wrong Email or
                                         Password</FormHelperText>}
                             </FormControl>
-
                             <Stack direction="row" spacing={2}>
                                 <Button onClick={handleClose} variant="contained">Cancel</Button>
                                 <Button type="submit" variant="contained">Log in</Button>
