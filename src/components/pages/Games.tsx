@@ -22,6 +22,7 @@ const Games = () => {
     const [deleteGame] = useRemoveGameByIdMutation();
     const handleDeleteButton = (gameId: any) => {
         deleteGame(gameId);
+        refetch()
     }
 
     return (

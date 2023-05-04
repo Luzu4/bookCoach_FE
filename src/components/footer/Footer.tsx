@@ -31,7 +31,7 @@ const Footer = () => {
                     </Grid>
                     <Grid item xs={12} marginTop={"20px"}>
                         <Typography style={{color: "#E9B872"}} component="p" variant="caption" gutterBottom={false}>©
-                            2022
+                            2023
                             Luz </Typography>
                     </Grid>
                 </Grid>

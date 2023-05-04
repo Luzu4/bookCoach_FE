@@ -85,9 +85,9 @@ const Lessons = () => {
             <Grid container display="flex" alignContent={"center"}>
                 <Grid item xs={12}>
                     {userData.role === "COACH" ?
-                        <AddNewLesson refetchTable={getCoachLesson}/> : ""}
+                        <AddNewLesson refetchTable={getCoachLesson} setTableData={setTableData}/> : ""}
                     {userData.role === "ADMIN" ?
-                        <AddNewLesson refetchTable={getAdminLesson}/> : ""}
+                        <AddNewLesson refetchTable={getAdminLesson} setTableData={setTableData}/> : ""}
                 </Grid>
                 <Grid item xs={12}>
                     <LessonsTableList data={tableData} handleDeleteButton={handleDeleteButton}

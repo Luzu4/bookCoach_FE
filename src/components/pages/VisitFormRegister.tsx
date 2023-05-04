@@ -94,7 +94,6 @@ const VisitFormRegister = () => {
     const onSubmit: SubmitHandler<FormValues> = data => {
         data.coachId = coachId;
         data.gameId = gameId;
-        setEmail(data.email);
     }
 
     const [email, setEmail] = useState("");
