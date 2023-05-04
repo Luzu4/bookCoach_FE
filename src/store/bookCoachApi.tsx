@@ -9,7 +9,8 @@ const prepareHeaders = (headers: Headers) => {
 
 export const bookCoachApi = createApi({
     reducerPath: 'bookCoachApi',
-    baseQuery: fetchBaseQuery({baseUrl: 'http://localhost:8080/api/',
+    baseQuery: fetchBaseQuery({
+        baseUrl: 'http://localhost:8080/api/',
         prepareHeaders
     }),
 
@@ -19,7 +20,7 @@ export const bookCoachApi = createApi({
             query: () => "game/all"
         }),
         getAllLessons: builder.mutation<Lesson[], void>({
-            query:()=> 'lesson/all'
+            query: () => 'lesson/all'
         }),
         getGameById: builder.query<Game, number>({
             query: (id) => `game/${id}`,
@@ -73,82 +74,82 @@ export const bookCoachApi = createApi({
             })
         }),
         removeLessonById: builder.mutation({
-            query:(lessonId)=>({
+            query: (lessonId) => ({
                 url: `lesson/remove/${lessonId}`,
                 method: "DELETE",
             })
         }),
         removeGameById: builder.mutation({
-            query:(gameId)=>({
-                url:`game/delete/${gameId}`,
-                method:"DELETE",
+            query: (gameId) => ({
+                url: `game/delete/${gameId}`,
+                method: "DELETE",
             })
         }),
         removePlayerFromLesson: builder.mutation({
-            query:(lessonId)=>({
+            query: (lessonId) => ({
                 url: `lesson/remove/player/${lessonId}`,
                 method: "PATCH"
             })
         }),
         getLessonsByUserIdAndDate: builder.query<Lesson[], string>({
-            query:(date)=>({
+            query: (date) => ({
                 url: `lesson/all/coach/date/${date}`
             })
         }),
         getGamesByUser: builder.query<Game[], string>({
-            query:()=>({
-                url:`game/user`
+            query: () => ({
+                url: `game/user`
             })
         }),
         addNewLessons: builder.mutation({
-            query:(payload)=>({
-                url : `lesson/add`,
+            query: (payload) => ({
+                url: `lesson/add`,
                 method: "PUT",
-                body:payload,
+                body: payload,
 
             })
         }),
         getAllUsers: builder.query<UserForTable[], string>({
-            query: ()=>({
-                url:`user/all`
+            query: () => ({
+                url: `user/all`
             })
         }),
         updateUserGames: builder.mutation({
-            query:(payload)=>({
+            query: (payload) => ({
                 url: `user/admin/edit`,
                 method: "PATCH",
-                body:payload
+                body: payload
             })
         }),
         getHappyStudents: builder.query({
-            query:()=>({
+            query: () => ({
                 url: `happy`
             })
         }),
         getUserByEmail: builder.query({
-            query: (userEmail)=>({
+            query: (userEmail) => ({
                 url: `user/${userEmail}`
             })
         }),
         updateUserData: builder.mutation({
-            query:(payload)=>({
+            query: (payload) => ({
                 url: `user/edit`,
-                method:"PATCH",
-                body:payload
+                method: "PATCH",
+                body: payload
             })
         }),
-        updateGameData:builder.mutation({
-            query:(payload)=>({
-                url:`game/edit`,
-                method:"PATCH",
-                body:payload
+        updateGameData: builder.mutation({
+            query: (payload) => ({
+                url: `game/edit`,
+                method: "PATCH",
+                body: payload
             })
         }),
-        addNewGame:builder.mutation({
-            query:(payload)=>({
-                url:`game/add`,
-                method:"PUT",
-                body:payload,
+        addNewGame: builder.mutation({
+            query: (payload) => ({
+                url: `game/add`,
+                method: "PUT",
+                body: payload,
             })
         })
 

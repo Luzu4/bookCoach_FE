@@ -1,12 +1,11 @@
 import {configureStore} from '@reduxjs/toolkit';
 import {useDispatch} from "react-redux";
-import coachesSlice from "./coachesSlice";
-import { setupListeners } from '@reduxjs/toolkit/query'
-import { bookCoachApi } from './bookCoachApi'
+import {setupListeners} from '@reduxjs/toolkit/query'
+import {bookCoachApi} from './bookCoachApi'
 import userSlice from "./userSlice";
 
 const store = configureStore({
-    reducer: {coaches: coachesSlice.reducer,user:userSlice.reducer, [bookCoachApi.reducerPath]: bookCoachApi.reducer,},
+    reducer: {user: userSlice.reducer, [bookCoachApi.reducerPath]: bookCoachApi.reducer,},
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(bookCoachApi.middleware),
 })

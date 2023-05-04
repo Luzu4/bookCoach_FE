@@ -16,7 +16,6 @@ import {
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import {useForm, SubmitHandler} from "react-hook-form";
-import {useAppDispatch} from "../../store/store";
 import {userSelector} from "../../store/userSlice";
 import {useSelector} from "react-redux";
 import {useEffect, useState} from "react";
@@ -54,7 +53,7 @@ const EditUserData: React.FC = () => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    const [jwt,setJwt] = useLocalState("","jwt");
+    const [,setJwt] = useLocalState("", "jwt");
 
     const [showPassword, setShowPassword] = React.useState(false);
 
@@ -63,8 +62,6 @@ const EditUserData: React.FC = () => {
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
     };
-    const dispatch = useAppDispatch();
-
 
     const {register, handleSubmit} = useForm<formInput>();
 
@@ -99,11 +96,11 @@ const EditUserData: React.FC = () => {
 
     }, [userDataFetch])
 
-    const [emptyEmailError, setEmptyEmailError]= useState(false)
+    const [emptyEmailError, setEmptyEmailError] = useState(false)
     const [confirmPasswordError, setConfirmPasswordError] = useState(false)
     const [emailExistsError, setEmailExistsError] = useState(false)
 
-    const [updateUserData, response] = useUpdateUserDataMutation();
+    const [updateUserData] = useUpdateUserDataMutation();
     const onSubmit: SubmitHandler<formInput> = data => {
 
         const reqBody = {
@@ -116,33 +113,26 @@ const EditUserData: React.FC = () => {
             description: data.description,
             imageUrl: data.imageUrl
         };
-        console.log(reqBody)
         if (data.password === data.confirmPassword && data.email) {
-                updateUserData(reqBody).unwrap()
-                    .then()
-                    .catch(error=>{
-                        if(error.data.message === "This Email is Already in use"){
-                            setEmailExistsError(true)
-                        }
-                    }).then(()=>{
-                    if(userData.email !== reqBody.email){
-                        localStorage.removeItem("jwt");
-                        setJwt("");
-                        window.location.href = "/";
+            updateUserData(reqBody).unwrap()
+                .then()
+                .catch(error => {
+                    if (error.data.message === "This Email is Already in use") {
+                        setEmailExistsError(true)
                     }
-
-                })
-
-
-        } else if(data.password !== data.confirmPassword) {
+                }).then(() => {
+                if (userData.email !== reqBody.email) {
+                    localStorage.removeItem("jwt");
+                    setJwt("");
+                    window.location.href = "/";
+                }
+            })
+        } else if (data.password !== data.confirmPassword) {
             setConfirmPasswordError(true)
-        }else if(!data.email){
+        } else if (!data.email) {
             setEmptyEmailError(true)
         }
-
-
     }
-
     return (
         <div>
             <Button color="inherit" onClick={handleOpen}>Settings</Button>
@@ -150,8 +140,7 @@ const EditUserData: React.FC = () => {
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
+                aria-describedby="modal-modal-description">
                 <Box sx={boxContainerStyle}>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <Grid container spacing={2}
@@ -168,7 +157,8 @@ const EditUserData: React.FC = () => {
                                            onChange={(event) => {
                                                setEmailExistsError(false)
                                                setEmptyEmailError(false)
-                                               setUser({...user, email: event.target.value})}}
+                                               setUser({...user, email: event.target.value})
+                                           }}
                                            type="email" label="Email"
                                            variant="outlined"/>
                                 <FormHelperError message={"This field cannot be empty!"} isError={emptyEmailError}/>
@@ -212,7 +202,6 @@ const EditUserData: React.FC = () => {
                                            type="text" label="ImageUrl"
                                            variant="outlined"/>
                             </FormControl>
-
                             <FormControl sx={{m: 1, width: '25ch'}} variant="outlined">
                                 <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
                                 <OutlinedInput
@@ -233,11 +222,10 @@ const EditUserData: React.FC = () => {
                                     }
                                     label="Password"
                                 />
-
                             </FormControl>
                             <FormControl sx={{m: 1, width: '25ch'}} variant="outlined">
                                 <TextField {...register("confirmPassword")} type="password"
-                                           onChange={()=>setConfirmPasswordError(false)}
+                                           onChange={() => setConfirmPasswordError(false)}
                                            label="ConfirmPassword"
                                            variant="outlined"/>
                                 <FormHelperError message={"Password must be same"} isError={confirmPasswordError}/>

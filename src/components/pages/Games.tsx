@@ -14,16 +14,15 @@ const Games = () => {
 
 
     useEffect(() => {
-            if(allGamesDataFetch){
-                setTableData(allGamesDataFetch);
-            }
+        if (allGamesDataFetch) {
+            setTableData(allGamesDataFetch);
+        }
     }, [allGamesDataFetch])
 
-    const [deleteGame, response] = useRemoveGameByIdMutation();
-    const handleDeleteButton = (gameId: any)=>{
+    const [deleteGame] = useRemoveGameByIdMutation();
+    const handleDeleteButton = (gameId: any) => {
         deleteGame(gameId);
     }
-
 
     return (
         <div>
@@ -35,8 +34,6 @@ const Games = () => {
                     <AddNewGame refetch={refetch}/>
                 </Grid>
             </Grid>
-
-
         </div>
     );
 };

@@ -17,9 +17,8 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import {useForm, SubmitHandler} from "react-hook-form";
 import {useAppDispatch} from "../../store/store";
-import {authenticateUser, userSelector} from "../../store/userSlice";
-import {useSelector} from "react-redux";
-import {useEffect, useState} from "react";
+import {authenticateUser} from "../../store/userSlice";
+import {useState} from "react";
 
 const boxContainerStyle = {
     position: 'absolute' as 'absolute',
@@ -41,21 +40,19 @@ interface formInput {
 
 const LoginModal: React.FC = () => {
     const [open, setOpen] = React.useState(false);
+    const [userDataError, setUserDataError] = useState(false);
+    const [userEmailVerifiedError, setUserEmailVerifiedError] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-
     const [showPassword, setShowPassword] = React.useState(false);
 
-    const handleClickShowPassword = () => setShowPassword((show) => !show);
 
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
     };
     const dispatch = useAppDispatch();
-
-
     const {register, handleSubmit} = useForm<formInput>();
-    const [userDataError, setUserDataError] = useState(false);
 
     const onSubmit: SubmitHandler<formInput> = data => {
 
@@ -65,8 +62,12 @@ const LoginModal: React.FC = () => {
         };
         dispatch(authenticateUser(reqBody)).unwrap()
             .then()
-            .catch(error=>{
-                setUserDataError(true)
+            .catch(error => {
+                if (error.message === "Wrong email or password!") {
+                    setUserDataError(true)
+                } else if (error.message === "Email not verified!") {
+                    setUserEmailVerifiedError(true)
+                }
             });
     }
 
@@ -77,8 +78,7 @@ const LoginModal: React.FC = () => {
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
+                aria-describedby="modal-modal-description">
                 <Box sx={boxContainerStyle}>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <Grid container spacing={2}
@@ -91,15 +91,24 @@ const LoginModal: React.FC = () => {
                                 </Typography>
                             </Grid>
                             <FormControl sx={{m: 1, width: '25ch'}} variant="outlined">
-                                <TextField {...register("email")} type="email" onChange={()=>{setUserDataError(false)}} id="outlined-basic" label="Email"
+                                <TextField {...register("email")} type="email" onChange={() => {
+                                    setUserDataError(false)
+                                }} id="outlined-basic" label="Email"
                                            variant="outlined"/>
-                                {userDataError && <FormHelperText style={{color:"red"}} id="component-error-text"> Wrong Email or Password</FormHelperText>}
+                                {userDataError &&
+                                    <FormHelperText style={{color: "red"}} id="component-error-text"> Wrong Email or
+                                        Password</FormHelperText>}
+                                {userEmailVerifiedError &&
+                                    <FormHelperText style={{color: "red"}} id="component-error-text"> Email not
+                                        verified!</FormHelperText>}
                             </FormControl>
                             <FormControl sx={{m: 1, width: '25ch'}} variant="outlined">
                                 <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
                                 <OutlinedInput
                                     {...register("password")}
-                                    onChange={()=>{setUserDataError(false)}}
+                                    onChange={() => {
+                                        setUserDataError(false)
+                                    }}
                                     id="outlined-adornment-password"
                                     type={showPassword ? 'text' : 'password'}
                                     endAdornment={
@@ -108,17 +117,16 @@ const LoginModal: React.FC = () => {
                                                 aria-label="toggle password visibility"
                                                 onClick={handleClickShowPassword}
                                                 onMouseDown={handleMouseDownPassword}
-                                                edge="end"
-                                            >
+                                                edge="end">
                                                 {showPassword ? <VisibilityOff/> : <Visibility/>}
                                             </IconButton>
                                         </InputAdornment>
                                     }
-                                    label="Password"
-                                />
-                                {userDataError && <FormHelperText style={{color:"red"}} id="component-error-text"> Wrong Email or Password</FormHelperText>}
+                                    label="Password"/>
+                                {userDataError &&
+                                    <FormHelperText style={{color: "red"}} id="component-error-text"> Wrong Email or
+                                        Password</FormHelperText>}
                             </FormControl>
-
                             <Stack direction="row" spacing={2}>
                                 <Button onClick={handleClose} variant="contained">Cancel</Button>
                                 <Button type="submit" variant="contained">Log in</Button>

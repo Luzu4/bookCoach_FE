@@ -34,11 +34,10 @@ const boxContainerStyle = {
 };
 
 type props = {
-    refetchCoach:any;
-    refetchAdmin:any;
+    refetchTable: any;
 }
 
-const LoginModal: React.FC<props> = ({refetchCoach, refetchAdmin}) => {
+const LoginModal: React.FC<props> = ({refetchTable}) => {
     const allHours = ["00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "08:00", "09:00", "10:00", "11:00",
         "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"]
     const [open, setOpen] = React.useState(false);
@@ -65,7 +64,10 @@ const LoginModal: React.FC<props> = ({refetchCoach, refetchAdmin}) => {
         }
     }, [userGamesFetch])
 
-    const {data: lessonAlreadyAddedFetch, refetch} = useGetLessonsByUserIdAndDateQuery(dateToAddLesson?.format("YYYY-MM-DD") + "", {skip:!dateToAddLesson})
+    const {
+        data: lessonAlreadyAddedFetch,
+        refetch
+    } = useGetLessonsByUserIdAndDateQuery(dateToAddLesson?.format("YYYY-MM-DD") + "", {skip: !dateToAddLesson})
     const [addNewLessons] = useAddNewLessonsMutation();
 
     const [selectGameError, setSelectGameError] = useState(false)
@@ -73,28 +75,27 @@ const LoginModal: React.FC<props> = ({refetchCoach, refetchAdmin}) => {
     const [selectHoursError, setSelectHoursError] = useState(false)
 
     const handleAddButtonClick = () => {
-        if(lessonHours.length>0 && dateToAddLesson && gameId){
+        if (lessonHours.length > 0 && dateToAddLesson && gameId) {
             let lessonsDataToSave = {
                 "date": dateToAddLesson.format("YYYY-MM-DD"),
                 "gameId": gameId,
                 "hours": lessonHours.toString()
             }
             addNewLessons(lessonsDataToSave).unwrap()
-                .then(()=>{
+                .then(() => {
                 })
-            refetchCoach();
-            refetchAdmin();
+            refetchTable();
             refetch();
             setSelectGameError(false)
             setSelectDateError(false)
             setSelectHoursError(false)
             setDateToAddLesson(null)
 
-        }else if(!gameId){
+        } else if (!gameId) {
             setSelectGameError(true)
-        }else if(!dateToAddLesson){
+        } else if (!dateToAddLesson) {
             setSelectDateError(true)
-        }else if(lessonHours.length<1){
+        } else if (lessonHours.length < 1) {
             setSelectHoursError(true)
         }
     }
@@ -127,25 +128,23 @@ const LoginModal: React.FC<props> = ({refetchCoach, refetchAdmin}) => {
 
     return (
         <div>
-            <Button style={{marginTop:"30px"}}color="error" variant="outlined"  onClick={handleOpen}>Add New Lesson</Button>
+            <Button style={{marginTop: "30px"}} color="error" variant="outlined" onClick={handleOpen}>Add New
+                Lesson</Button>
             <Modal
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
+                aria-describedby="modal-modal-description">
                 <Box sx={boxContainerStyle}>
                     <Grid container spacing={2}
                           justifyContent="center"
                           alignItems="center">
                         <Stack direction="column" spacing={2}>
-
                             <SelectDropDown id={gameId} handleChange={handleChangeGameName} values={games}/>
                             <FormHelperError message={"First select Game"} isError={selectGameError}/>
-
                             <DatePicker disablePast label="Lesson Date" value={dateToAddLesson}
                                         onChange={(newDateToAddLesson) => handleDateChange(newDateToAddLesson)}/>
-                           <FormHelperError message={"First Select date!"} isError={selectDateError}/>
+                            <FormHelperError message={"First Select date!"} isError={selectDateError}/>
                             {dateToAddLesson ? <MultiSelectDropDown availableHours={availableHours}
                                                                     setLessonHours={setLessonHours}/> : ""}
                             <FormHelperError message={'Select hours of lessons'} isError={selectHoursError}/>

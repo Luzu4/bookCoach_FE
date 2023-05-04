@@ -10,7 +10,7 @@ type StaffType = {
 }
 
 function getRandom(arr: any[], n: number) {
-    if(arr){
+    if (arr) {
         var result = new Array(n),
             len = arr.length,
             taken = new Array(len);
@@ -23,30 +23,23 @@ function getRandom(arr: any[], n: number) {
         }
         return result;
     }
-
 }
 
 const StaffSection = () => {
-
     const {data: staffDataFetch} = useGetAllByTypeQuery("COACH");
-
     const [staff, setStaff] = useState<StaffType[]>();
-
     useEffect(() => {
         if (staffDataFetch) {
-            if(staffDataFetch.length>0){
+            if (staffDataFetch.length > 0) {
                 setStaff(getRandom(staffDataFetch, 3));
             }
-
         }
-
     }, [staffDataFetch])
 
-
     return (
-        <div  style={{paddingBottom:"10px"}}>
+        <div style={{paddingBottom: "10px"}}>
             <Grid>
-                <Grid style={{color:"#E9B872"}}>
+                <Grid style={{color: "#E9B872"}}>
                     <h1>OUR STAFF</h1>
                 </Grid>
                 <Grid container spacing={3} display={"flex"} justifyContent={"center"}>

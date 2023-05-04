@@ -6,27 +6,16 @@ import Modal from '@mui/material/Modal';
 import {
     FormControl,
     Grid,
-    IconButton,
-    InputAdornment,
-    InputLabel,
-    OutlinedInput,
     Stack,
     TextField
 } from "@mui/material";
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
+
 import {useForm, SubmitHandler} from "react-hook-form";
-import {useAppDispatch} from "../../store/store";
-import {userSelector} from "../../store/userSlice";
-import {useSelector} from "react-redux";
 import {useEffect} from "react";
 import {
     useGetGameByIdQuery,
-    useGetUserByEmailQuery,
     useUpdateGameDataMutation,
-    useUpdateUserDataMutation
 } from "../../store/bookCoachApi";
-import {Game} from "../../interfaces";
 
 const boxContainerStyle = {
     position: 'absolute' as 'absolute',
@@ -47,19 +36,15 @@ interface formInput {
     imageUrl: string;
 }
 
-type props={
-    gameId:number,
-    refetch:any,
+type props = {
+    gameId: number,
+    refetch: any,
 }
 
-const EditGame: React.FC<props> = ({gameId,refetch}) => {
+const EditGame: React.FC<props> = ({gameId, refetch}) => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-
-    const dispatch = useAppDispatch();
-
-
     const {register, handleSubmit} = useForm<formInput>();
 
     const [game, setGame] = React.useState<formInput>({
@@ -72,35 +57,28 @@ const EditGame: React.FC<props> = ({gameId,refetch}) => {
     const {data: gameDataFetch} = useGetGameByIdQuery(gameId)
 
     useEffect(() => {
-
-        if(gameDataFetch){
+        if (gameDataFetch) {
             setGame({
                 name: gameDataFetch.name,
                 shortGameName: gameDataFetch.shortGameName,
                 description: gameDataFetch.description,
                 imageUrl: gameDataFetch.imageUrl,
-
             })
         }
-
-
     }, [gameDataFetch])
 
-    const [updateGameData, response] = useUpdateGameDataMutation();
+    const [updateGameData] = useUpdateGameDataMutation();
     const onSubmit: SubmitHandler<formInput> = data => {
-
         const reqBody = {
-            id:gameId,
+            id: gameId,
             name: data.name,
-            shortGameName:data.shortGameName,
+            shortGameName: data.shortGameName,
             description: data.description,
             imageUrl: data.imageUrl,
         };
-
         updateGameData(reqBody);
         refetch();
         setOpen(false);
-
     }
     return (
         <div>
@@ -109,8 +87,7 @@ const EditGame: React.FC<props> = ({gameId,refetch}) => {
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
+                aria-describedby="modal-modal-description">
                 <Box sx={boxContainerStyle}>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <Grid container spacing={2}
@@ -123,19 +100,27 @@ const EditGame: React.FC<props> = ({gameId,refetch}) => {
                                 </Typography>
                             </Grid>
                             <FormControl sx={{m: 1, width: '25ch'}} variant="outlined">
-                                <TextField {...register("name")} value={game.name} onChange={(event)=>setGame({...game,name:event.target.value})} type="text" id="outlined-basic" label="Name"
+                                <TextField {...register("name")} value={game.name}
+                                           onChange={(event) => setGame({...game, name: event.target.value})}
+                                           type="text" id="outlined-basic" label="Name"
                                            variant="outlined"/>
                             </FormControl>
                             <FormControl sx={{m: 1, width: '25ch'}} variant="outlined">
-                                <TextField {...register("shortGameName")} value={game.shortGameName} onChange={(event)=>setGame({...game,shortGameName:event.target.value})}  type="text" id="outlined-basic" label="ShortGameName"
+                                <TextField {...register("shortGameName")} value={game.shortGameName}
+                                           onChange={(event) => setGame({...game, shortGameName: event.target.value})}
+                                           type="text" id="outlined-basic" label="ShortGameName"
                                            variant="outlined"/>
                             </FormControl>
                             <FormControl sx={{m: 1, width: '25ch'}} variant="outlined">
-                                <TextField {...register("description")} value={game.description} onChange={(event)=>setGame({...game,description:event.target.value})}  type="text" id="outlined-basic" label="Description"
+                                <TextField {...register("description")} value={game.description}
+                                           onChange={(event) => setGame({...game, description: event.target.value})}
+                                           type="text" id="outlined-basic" label="Description"
                                            variant="outlined"/>
                             </FormControl>
                             <FormControl sx={{m: 1, width: '25ch'}} variant="outlined">
-                                <TextField {...register("imageUrl")} value={game.imageUrl} onChange={(event)=>setGame({...game,imageUrl:event.target.value})}  type="text" id="outlined-basic" label="ImageUrl"
+                                <TextField {...register("imageUrl")} value={game.imageUrl}
+                                           onChange={(event) => setGame({...game, imageUrl: event.target.value})}
+                                           type="text" id="outlined-basic" label="ImageUrl"
                                            variant="outlined"/>
                             </FormControl>
                             <Stack direction="row" spacing={12}>

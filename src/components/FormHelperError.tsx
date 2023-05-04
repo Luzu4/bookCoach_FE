@@ -2,13 +2,13 @@ import React from 'react';
 import {FormHelperText} from "@mui/material";
 
 type props = {
-    message:string;
-    isError:boolean
+    message: string;
+    isError: boolean
 }
-const FormHelperError:React.FC<props> = ({message, isError}) => {
+const FormHelperError: React.FC<props> = ({message, isError}) => {
     return (
         <div>
-            {isError && <FormHelperText style={{color:"red"}} id="component-error-text"> {message}</FormHelperText>}
+            {isError && <FormHelperText style={{color: "red"}} id="component-error-text"> {message}</FormHelperText>}
         </div>
     );
 };
