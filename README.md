@@ -1,7 +1,7 @@
 # # General info
 
 This project provides a functional app for video game players and coaches to arrange training.  
-FE: https://github.com/Luzu4/bookCoach_FE
+BE:  [Book Coach BE](https://github.com/Luzu4/bookCoach_BE)
 ## Purpose
 App was build as a final project for Java Coders Lab course.
 
