@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {RootState} from "./store";
-import {ResponseAuthData, TokenData, UserStateData} from "../interfaces";
+import {TokenData, UserStateData} from "../interfaces";
 import jwt_decode from "jwt-decode";
 
 interface AuthenticatePayload {
@@ -13,23 +13,22 @@ const defaultUserState: UserStateData = {email: "", role: "", isAuthenticated: f
 export const authenticateUser = createAsyncThunk(
     "user/authenticate",
     async (payload: AuthenticatePayload) => {
-        try{
+        try {
             const response = await fetch("/api/v1/auth/authenticate", {
                 headers: {
                     "Content-Type": "application/json",
                 },
                 method: "post",
                 body: JSON.stringify(payload),
-            });
-
-            const data: ResponseAuthData = await response.json();
-
-            if(!data.token){
+            }).then(response => response.json());
+            if (response.message === "Email not verified!") {
+                throw new Error("Email not verified!");
+            }
+            const data = response;
+            if (!data.token) {
                 throw new Error("Wrong email or password!");
             }
-
             const decodedToken: TokenData = jwt_decode(data.token);
-
             const userData: UserStateData = {
                 email: decodedToken.sub,
                 role: decodedToken.role.authority,
@@ -38,7 +37,7 @@ export const authenticateUser = createAsyncThunk(
 
             localStorage.setItem("jwt", "\"" + data.token + "\"");
             return userData;
-        }catch(e){
+        } catch (e) {
             throw e;
         }
 
@@ -69,30 +68,23 @@ export const checkToken = createAsyncThunk(
 export const registerUser = createAsyncThunk(
     "user/authenticate",
     async (payload: AuthenticatePayload) => {
-        const response = await fetch("api/v1/auth/register", {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            method: "post",
-            body: JSON.stringify(payload),
-        });
+        try {
+            const response = await fetch("api/v1/auth/register", {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                method: "post",
+                body: JSON.stringify(payload),
+            }).then(response => response.json());
 
+            if (response.message === "User Already Exists!") {
+                throw new Error("Email already exists in database")
+            }
+            return "Confirm you email. Link sent on your email address"
+        } catch (e) {
 
-
-        const data: ResponseAuthData = await response.json();
-        if(!data.token){
-            throw new Error("Email already exists in database")
+            throw(e);
         }
-        const decodedToken: TokenData = jwt_decode(data.token);
-
-        const userData: UserStateData = {
-            email: decodedToken.sub,
-            role: decodedToken.role.authority,
-            isAuthenticated: true
-        };
-
-        localStorage.setItem("jwt", "\"" + data.token + "\"");
-        return userData;
     }
 );
 
