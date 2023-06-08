@@ -1,0 +1,10 @@
+version: "3.8"
+
+services:
+  bookcoachfe:
+    build: .
+    container_name: bookcoachfe_c
+    ports:
+      - '3000:3000'
+    stdin_open: true
+    tty: true
